@@ -1,0 +1,23 @@
+body {
+    background-color: #98b4c7;
+    overflow: hidden
+}
+
+
+.text {
+    color: #112334;
+    font-size: 50px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+}
+
+.image{
+    position: absolute;
+    top: 60px;
+    left: 80px
+        
+    
+}
