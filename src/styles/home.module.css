@@ -1,23 +1,45 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+
 body {
     background-color: #98b4c7;
     overflow: hidden
 }
 
 
-.text {
-    color: #112334;
-    font-size: 50px;
-    font-weight: bold;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
 }
 
-.image{
-    position: absolute;
-    top: 60px;
-    left: 80px
-        
+.imageContainer, .textContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-50px);
+}
+
+.text {
+    font-family: 'Poppins';
+    color: #112334;
+    font-size: 70px;
+    text-align: center;
+}
+
+.image {
+    width: 90%;
+    transform: translateY(40px);
     
+}
+
+
+.button {
+    font-size: 20px;
+    background-color: #112334;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
