@@ -10,9 +10,9 @@ const Home = () => {
     setIsLogin(true);
   }
 
-  const closeLogin = () => {
-    setIsLogin(false);
-  }
+  // const closeLogin = () => {
+  //   setIsLogin(false);
+  // }
 
   return (
     <div className={styles.container}>
@@ -34,7 +34,7 @@ const Login = () => {
     <div className={styles.loginContainer}>
       <div>
         <img src={logo} className={styles.logoImage} />
-        </div> 
+      </div>
     </div>
   )
 }
