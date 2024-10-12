@@ -1,14 +1,18 @@
-import './App.css'
-import {Router} from './router'
+import { QueryClient, QueryClientProvider } from "react-query";
+import "./App.css";
+import { Router } from "./router";
+import { AuthProvider } from "./screens/AuthContex";
 
+const queryClient = new QueryClient();
 
 const App = () => {
- 
   return (
-    <>
-      <Router />
-    </>
-  ) 
-}
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Router />
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+};
 
-export default App
+export default App;
