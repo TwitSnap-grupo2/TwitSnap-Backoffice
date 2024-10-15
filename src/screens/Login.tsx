@@ -2,17 +2,21 @@ import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import logo from "../assets/logo.png";
 import closeIcon from "../assets/close_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg";
-
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
+// import useAuth from "../hooks/useAuth";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import loginService from "../services/userService";
+import { LoginCredentials } from "../types";
 
 interface LoginParams {
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Login = (params: LoginParams) => {
+  // const { login } = useAuth();
+  const [loginError, setLoginError] = useState("");
+  const navigate = useNavigate();
+
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email format")
@@ -22,12 +26,25 @@ const Login = (params: LoginParams) => {
       .required("Password is required"),
   });
 
-  const onSubmit = (
-    values: LoginFormValues,
+  const onSubmit = async (
+    values: LoginCredentials,
     { resetForm }: { resetForm: () => void }
   ) => {
     console.log("Login data:", values);
-    resetForm();
+    try {
+      // login(values);
+      await loginService.login(values);
+      resetForm();
+      setLoginError("");
+      return navigate("/dashboard");
+    } catch (err: unknown) {
+      console.error("🚀 ~ Login ~ err:", err);
+      if (err instanceof Error) {
+        setLoginError(err.message);
+      } else {
+        setLoginError("An unexpected error occurred.");
+      }
+    }
   };
 
   return (
@@ -42,6 +59,9 @@ const Login = (params: LoginParams) => {
               onClick={() => params.setIsLogin(false)}
               alt="Close"
             />
+          </div>
+          <div className="flex justify-center text-2xl font-semibold">
+            <h2>Log in</h2>
           </div>
           <Formik
             initialValues={{ email: "", password: "" }}
@@ -89,6 +109,11 @@ const Login = (params: LoginParams) => {
                 >
                   {isSubmitting ? "Submitting..." : "Login"}
                 </button>
+                {loginError && (
+                  <div>
+                    <p className="text-black">{loginError}</p>
+                  </div>
+                )}
               </Form>
             )}
           </Formik>

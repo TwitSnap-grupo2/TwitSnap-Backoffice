@@ -2,22 +2,21 @@ import * as Yup from "yup";
 import logo from "../assets/logo.png";
 import closeIcon from "../assets/close_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-
-interface FormValues {
-  user: string;
-  username: string;
-  email: string;
-  password: string;
-}
+import { SignupCredentials } from "../types";
+import { useNavigate } from "react-router-dom";
+import userService from "../services/userService";
+import { FirebaseError } from "firebase/app";
+import { useState } from "react";
 
 interface Params {
   setIsRegister: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Register = (params: Params) => {
+  const navigate = useNavigate();
+  const [registerError, setRegisterError] = useState("");
+
   const validationSchema = Yup.object({
-    user: Yup.string().required("User is required"),
-    username: Yup.string().required("Username is required"),
     email: Yup.string()
       .email("Invalid email format")
       .required("Email is required"),
@@ -26,12 +25,23 @@ const Register = (params: Params) => {
       .required("Password is required"),
   });
 
-  const onSubmit = (
-    values: FormValues,
+  const onSubmit = async (
+    values: SignupCredentials,
     { resetForm }: { resetForm: () => void }
   ) => {
-    console.log("Form data:", values);
-    resetForm();
+    try {
+      await userService.signup(values);
+      resetForm();
+      navigate("/dashboard");
+    } catch (err) {
+      if (err instanceof FirebaseError) {
+        console.error("Firebase error", err.customData);
+        setRegisterError(err.message);
+      }
+      if (err instanceof Error) {
+        console.error("Error: ", err.message);
+      }
+    }
   };
 
   return (
@@ -46,45 +56,18 @@ const Register = (params: Params) => {
               onClick={() => params.setIsRegister(false)} // Close the modal when clicked
             />
           </div>
+
+          <div className="flex justify-center text-2xl font-semibold">
+            <h2>Register</h2>
+          </div>
+
           <Formik
-            initialValues={{ user: "", username: "", email: "", password: "" }}
+            initialValues={{ email: "", password: "" }}
             validationSchema={validationSchema}
             onSubmit={onSubmit}
           >
             {({ isSubmitting }) => (
               <Form className="flex flex-col gap-2">
-                <div className="flex flex-col gap-2">
-                  <Field
-                    type="text"
-                    name="user"
-                    placeholder="User"
-                    className="bg-gray-200 rounded-md px-4 py-3 placeholder-gray-600 w-full"
-                  />
-                  <div className="min-h-[1.5rem]">
-                    <ErrorMessage
-                      name="user"
-                      component="div"
-                      className="text-red-500 text-base"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <Field
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    className="bg-gray-200 rounded-md px-4 py-3 placeholder-gray-600 w-full"
-                  />
-                  <div className="min-h-[1.5rem]">
-                    <ErrorMessage
-                      name="username"
-                      component="div"
-                      className="text-red-500 text-base"
-                    />
-                  </div>
-                </div>
-
                 <div className="flex flex-col gap-2">
                   <Field
                     type="email"
@@ -117,6 +100,11 @@ const Register = (params: Params) => {
                   </div>
                 </div>
 
+                {registerError && (
+                  <div>
+                    <p>{registerError}</p>
+                  </div>
+                )}
                 <button
                   type="submit"
                   disabled={isSubmitting}

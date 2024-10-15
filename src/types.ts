@@ -1,17 +1,23 @@
+import { User, UserCredential } from "firebase/auth";
+
 export interface AuthContextType {
   isLoggedIn: boolean;
   user: User | null;
-  login: (credentials: Credentials) => Promise<void>;
+  signup: (credentials: SignupCredentials) => Promise<UserCredential>;
+  login: (credentials: LoginCredentials) => Promise<UserCredential>;
   logout: () => void;
 }
 
-export interface Credentials {
+export interface LoginCredentials {
   email: string;
   password: string;
 }
 
-export interface User {
-  user: string;
-  name: string;
+export interface SignupCredentials {
   email: string;
+  password: string;
 }
+
+// export interface User {
+//   email: string;
+// }
