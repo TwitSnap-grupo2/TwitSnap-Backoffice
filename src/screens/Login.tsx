@@ -4,7 +4,7 @@ import logo from "../assets/logo.png";
 import closeIcon from "../assets/close_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import loginService from "../services/userService";
+import loginService from "../services/loginService";
 import { LoginCredentials } from "../types";
 
 interface LoginParams {

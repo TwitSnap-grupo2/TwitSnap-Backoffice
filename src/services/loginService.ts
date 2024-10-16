@@ -7,12 +7,7 @@ import { LoginCredentials, SignupCredentials } from "../types";
 import { auth } from "../firebase";
 import axios from "axios";
 import config from "../utils/config";
-let token: string | null = null;
-
-const setToken = (newToken: string): void => {
-  console.log("🚀 ~ setToken ~ newToken:", newToken);
-  token = `Bearer ${newToken}`;
-};
+import { setToken, token } from "../utils/common";
 
 const signup = async (credentials: SignupCredentials) => {
   console.log("🚀 ~ signup ~ credentials:", credentials);
@@ -30,7 +25,7 @@ const signup = async (credentials: SignupCredentials) => {
   };
 
   const res = await axios.post(
-    `${config.USERS_SERVICE_URL}/users/admin/signup`,
+    `${config.API_GATEWAY_URL}/users/admin/signup`,
     credentials,
     requestConfig
   );

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Register from "./Register";
 import Login from "./Login";
 import { useNavigate } from "react-router-dom";
-import userService from "../services/userService";
+import userService from "../services/loginService";
 
 const Home = () => {
   const [isRegister, setIsRegister] = useState(false);

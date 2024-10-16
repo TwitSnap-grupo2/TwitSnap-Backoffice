@@ -18,6 +18,9 @@ export interface SignupCredentials {
   password: string;
 }
 
-// export interface User {
-//   email: string;
-// }
+export interface TwitSnap {
+  message: string;
+  id: string;
+  createdAt: Date;
+  createdBy: string;
+}

@@ -9,6 +9,6 @@ const FIREBASE_CONFIG = {
   measurementIdauthDo: import.meta.env.VITE_MEASUREMENT_ID,
 };
 
-const USERS_SERVICE_URL = import.meta.env.VITE_USERS_SERVICE_URL;
+const API_GATEWAY_URL = import.meta.env.VITE_API_GATEWAY_URL;
 
-export default { FIREBASE_CONFIG, USERS_SERVICE_URL };
+export default { FIREBASE_CONFIG, API_GATEWAY_URL };
