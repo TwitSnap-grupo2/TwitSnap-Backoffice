@@ -2,7 +2,6 @@ import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import logo from "../assets/logo.png";
 import closeIcon from "../assets/close_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg";
-// import useAuth from "../hooks/useAuth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginService from "../services/userService";
@@ -13,7 +12,6 @@ interface LoginParams {
 }
 
 const Login = (params: LoginParams) => {
-  // const { login } = useAuth();
   const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
 
