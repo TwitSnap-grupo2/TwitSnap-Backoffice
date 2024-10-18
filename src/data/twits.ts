@@ -2,7 +2,6 @@ import { TwitSnap } from "../types";
 
 const date = new Date();
 const creatorUUID = crypto.randomUUID();
-console.log("🚀 ~ creatorUUID:", creatorUUID);
 
 const testTwits: Array<TwitSnap> = [
   {

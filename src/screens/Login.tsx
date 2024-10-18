@@ -1,11 +1,12 @@
 import * as Yup from "yup";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useFormik } from "formik";
 import logo from "../assets/logo.png";
 import closeIcon from "../assets/close_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginService from "../services/loginService";
 import { LoginCredentials } from "../types";
+import { Button, TextField } from "@mui/material";
 
 interface LoginParams {
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,14 +24,12 @@ const Login = (params: LoginParams) => {
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
   });
-
   const onSubmit = async (
     values: LoginCredentials,
     { resetForm }: { resetForm: () => void }
   ) => {
     console.log("Login data:", values);
     try {
-      // login(values);
       await loginService.login(values);
       resetForm();
       setLoginError("");
@@ -44,6 +43,14 @@ const Login = (params: LoginParams) => {
       }
     }
   };
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: onSubmit,
+  });
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -61,60 +68,49 @@ const Login = (params: LoginParams) => {
           <div className="flex justify-center text-2xl font-semibold">
             <h2>Log in</h2>
           </div>
-          <Formik
-            initialValues={{ email: "", password: "" }}
-            validationSchema={validationSchema}
-            onSubmit={onSubmit}
-          >
-            {({ isSubmitting }) => (
-              <Form className="flex flex-col gap-2">
-                <div className="flex flex-col gap-2">
-                  <Field
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    className="bg-gray-200 rounded-md px-4 py-3 placeholder-gray-600 w-full"
-                  />
-                  <div className="min-h-[1.5rem]">
-                    <ErrorMessage
-                      name="email"
-                      component="div"
-                      className="text-red-500 text-base"
-                    />
-                  </div>
-                </div>
+          <form onSubmit={formik.handleSubmit} className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
+              <TextField
+                id="standard-basic"
+                label="Email"
+                variant="standard"
+                type="email"
+                name="email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
+              />
+            </div>
 
-                <div className="flex flex-col gap-2">
-                  <Field
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    className="bg-gray-200 rounded-md px-4 py-3 placeholder-gray-600 w-full"
-                  />
-                  <div className="min-h-[1.5rem]">
-                    <ErrorMessage
-                      name="password"
-                      component="div"
-                      className="text-red-500 text-base"
-                    />
-                  </div>
-                </div>
+            <div className="flex flex-col gap-2">
+              <TextField
+                id="standard-basic"
+                label="Passowrd"
+                variant="standard"
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={
+                  formik.touched.password && Boolean(formik.errors.password)
+                }
+                helperText={formik.touched.password && formik.errors.password}
+              />
+            </div>
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="bg-blue-500 text-white px-4 py-3 mt-4 rounded-md hover:bg-blue-600"
-                >
-                  {isSubmitting ? "Submitting..." : "Login"}
-                </button>
-                {loginError && (
-                  <div>
-                    <p className="text-black">{loginError}</p>
-                  </div>
-                )}
-              </Form>
+            <Button sx={{ bgcolor: "#112334", color: "white" }} type="submit">
+              Login
+            </Button>
+            {loginError && (
+              <div>
+                <p className="text-black">{loginError}</p>
+              </div>
             )}
-          </Formik>
+          </form>
         </div>
       </div>
     </div>

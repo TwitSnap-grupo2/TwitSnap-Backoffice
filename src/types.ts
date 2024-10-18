@@ -24,3 +24,8 @@ export interface TwitSnap {
   createdAt: Date;
   createdBy: string;
 }
+
+export interface TwitSnapFilter {
+  filterBy: string;
+  filter: string;
+}

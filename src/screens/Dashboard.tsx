@@ -56,7 +56,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ bgcolor: "#98b4c7" }}>
         <AppBar position="static">
           <Toolbar>
             <IconButton
@@ -78,6 +78,7 @@ const Dashboard: React.FC = () => {
           </Toolbar>
         </AppBar>
       </Box>
+
       <Drawer open={openDrawer} onClose={toggleDrawer(false)}>
         <Box
           sx={{ width: 250 }}

@@ -5,6 +5,7 @@ import Register from "./Register";
 import Login from "./Login";
 import { useNavigate } from "react-router-dom";
 import userService from "../services/loginService";
+import { Box, Button } from "@mui/material";
 
 const Home = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -39,24 +40,33 @@ const Home = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.imageContainer}>
+    <Box className={styles.container}>
+      {/* <div className={styles.imageContainer}> */}
+      <Box>
         <img src={icon} className={styles.homeImage} />
-      </div>
-      <div className={styles.textContainer}>
+      </Box>
+      {/* </div> */}
+      <Box className={styles.textContainer}>
         <h1 className={styles.text}>Your Gateway to Management.</h1>
-        <div className="flex mt-5 gap-2">
-          <button id="home-button" onClick={openRegister}>
+        <Box className="flex mt-5 gap-2">
+          <Button
+            sx={{ bgcolor: "#112334", color: "white" }}
+            onClick={openRegister}
+          >
             Get Started
-          </button>
-          <button id="home-button" onClick={openLogin}>
+          </Button>
+          <Button
+            variant="contained"
+            sx={{ bgcolor: "#112334", color: "white" }}
+            onClick={openLogin}
+          >
             Login
-          </button>
-        </div>
-      </div>
+          </Button>
+        </Box>
+      </Box>
       {isRegister && <Register setIsRegister={setIsRegister} />}
       {isLogin && <Login setIsLogin={setIsLogin} />}
-    </div>
+    </Box>
   );
 };
 
