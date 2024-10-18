@@ -1,5 +1,5 @@
-import { SyntheticEvent, useEffect, useState } from "react";
-import { TwitSnap } from "../types";
+import { useEffect, useState } from "react";
+import { TwitSnap, TwitSnapFilter, TwitSnapFilterBy } from "../types";
 import twitsnapsService from "../services/twitsnapsService";
 import {
   Accordion,
@@ -10,19 +10,16 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const TwitSnaps = () => {
   const [twits, setTwits] = useState<Array<TwitSnap>>([]);
   const [originalTwits, setOriginalTwits] = useState<Array<TwitSnap>>([]);
-  const [filter, setFilter] = useState<
-    "id" | "createdBy" | "createdAt" | "message"
-  >("id");
-  const [filterValue, setFilterValue] = useState("");
 
   useEffect(() => {
     try {
@@ -39,61 +36,64 @@ const TwitSnaps = () => {
     }
   }, []);
 
-  const onSubmit = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-    if (filterValue == "") {
-      setFilterValue("");
-      setTwits(originalTwits);
-      return;
-    }
-    if (originalTwits.length === 0 || filterValue.trim() === "") {
+  const onSubmit = async (
+    values: TwitSnapFilter,
+    { resetForm }: { resetForm: () => void }
+  ) => {
+    console.log("🚀 ~ TwitSnaps ~ values:", values);
+    const filter = values.filter;
+    const filterBy = values.filterBy;
+
+    if (originalTwits.length === 0 || filter.trim() === "") {
       return;
     }
 
     const filteredTwits = originalTwits.filter((twit) => {
       let value;
-      if (filter == "createdAt") {
-        value = twit[filter].toISOString();
+      if (filterBy == "createdAt") {
+        value = twit[filterBy].toISOString();
       } else {
-        value = String(twit[filter]);
+        value = String(twit[filterBy]);
       }
-      console.log("🚀 ~ filteredTwits ~ value:", value);
-      return value.toLowerCase().includes(filterValue.toLowerCase());
+      return value.toLowerCase().includes(filter.toLowerCase());
     });
 
-    setTwits(filteredTwits); // Update the displayed list
+    setTwits(filteredTwits);
+
+    resetForm();
   };
 
-  const resetFilter = () => {
+  const onReset = () => {
     setTwits(originalTwits);
-    setFilterValue("");
+    formik.resetForm();
   };
 
-  const handleFilterChange = (event: SelectChangeEvent) => {
-    event.preventDefault();
-    const val = event.target.value;
-    if (
-      val == "id" ||
-      val == "createdBy" ||
-      val == "createdAt" ||
-      val == "message"
-    ) {
-      setFilter(val);
-    }
-  };
+  const validationSchema = Yup.object({
+    filter: Yup.string().required("Filter value is required"),
+    filterBy: Yup.mixed<TwitSnapFilterBy>()
+      .oneOf(Object.values(TwitSnapFilterBy))
+      .required("Filter by is required"),
+  });
 
-  const handleFilterValueChange = (event: SyntheticEvent) => {
-    setFilterValue(event.target.value);
-  };
+  const formik = useFormik({
+    initialValues: {
+      filterBy: TwitSnapFilterBy.id,
+      filter: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: onSubmit,
+  });
 
   return (
     <>
-      <form className="px-3 mt-3 " onSubmit={onSubmit}>
+      <form className="px-3 mt-3 " onSubmit={formik.handleSubmit}>
         <Box sx={{ display: "flex", gap: 1 }}>
           <TextField
             sx={{ mt: 2, width: "70%", justifyContent: "end" }}
+            name="filter"
             label="Enter something"
-            onChange={handleFilterValueChange}
+            value={formik.values.filter}
+            onChange={formik.handleChange}
           ></TextField>
           <Box sx={{ width: "30%" }}>
             <InputLabel id="filter-by-label">Filter By</InputLabel>
@@ -101,9 +101,11 @@ const TwitSnaps = () => {
               labelId="filter-by-label"
               id="filter-by-select"
               label="Filter by"
+              name="filterBy"
               sx={{ width: "100%" }}
               defaultValue={"id"}
-              onChange={handleFilterChange}
+              onChange={formik.handleChange}
+              value={formik.values.filterBy}
             >
               <MenuItem value={"id"}>ID</MenuItem>
               <MenuItem value={"createdAt"}>Created at</MenuItem>
@@ -124,7 +126,7 @@ const TwitSnaps = () => {
           Filter
         </Button>
         <Button
-          onClick={resetFilter}
+          onClick={onReset}
           sx={{
             mt: 1,
             width: "100%",

@@ -25,7 +25,14 @@ export interface TwitSnap {
   createdBy: string;
 }
 
+export enum TwitSnapFilterBy {
+  id = "id",
+  createdAt = "createdAt",
+  createdBy = "createdBy",
+  message = "message",
+}
+
 export interface TwitSnapFilter {
-  filterBy: string;
+  filterBy: TwitSnapFilterBy;
   filter: string;
 }

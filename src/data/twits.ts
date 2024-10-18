@@ -1,43 +1,40 @@
 import { TwitSnap } from "../types";
 
-const date = new Date();
-const creatorUUID = crypto.randomUUID();
-
 const testTwits: Array<TwitSnap> = [
   {
     message: "Test twitsnap 1",
-    createdAt: date,
-    createdBy: creatorUUID,
+    createdAt: new Date(),
+    createdBy: crypto.randomUUID(),
     id: crypto.randomUUID(),
   },
   {
     message: "Test twitsnap 2",
-    createdAt: date,
-    createdBy: creatorUUID,
+    createdAt: new Date(),
+    createdBy: crypto.randomUUID(),
     id: crypto.randomUUID(),
   },
   {
     message: "Test twitsnap 3",
-    createdAt: date,
-    createdBy: creatorUUID,
+    createdAt: new Date(),
+    createdBy: crypto.randomUUID(),
     id: crypto.randomUUID(),
   },
   {
     message: "Test twitsnap 4",
-    createdAt: date,
-    createdBy: creatorUUID,
+    createdAt: new Date(),
+    createdBy: crypto.randomUUID(),
     id: crypto.randomUUID(),
   },
   {
     message: "Test twitsnap 5",
-    createdAt: date,
-    createdBy: creatorUUID,
+    createdAt: new Date(),
+    createdBy: crypto.randomUUID(),
     id: crypto.randomUUID(),
   },
   {
     message: "Test twitsnap 6",
-    createdAt: date,
-    createdBy: creatorUUID,
+    createdAt: new Date(),
+    createdBy: crypto.randomUUID(),
     id: crypto.randomUUID(),
   },
 ];

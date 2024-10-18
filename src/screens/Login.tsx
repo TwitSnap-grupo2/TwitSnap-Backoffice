@@ -87,10 +87,10 @@ const Login = (params: LoginParams) => {
             <div className="flex flex-col gap-2">
               <TextField
                 id="standard-basic"
+                name="password"
                 label="Passowrd"
                 variant="standard"
                 type="password"
-                name="password"
                 placeholder="Password"
                 value={formik.values.password}
                 onChange={formik.handleChange}
