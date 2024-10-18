@@ -5,6 +5,5 @@ import config from "./utils/config";
 
 const firebaseConfig = config.FIREBASE_CONFIG;
 
-// Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);

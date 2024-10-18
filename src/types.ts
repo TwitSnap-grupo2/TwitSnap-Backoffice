@@ -18,6 +18,21 @@ export interface SignupCredentials {
   password: string;
 }
 
-// export interface User {
-//   email: string;
-// }
+export interface TwitSnap {
+  message: string;
+  id: string;
+  createdAt: Date;
+  createdBy: string;
+}
+
+export enum TwitSnapFilterBy {
+  id = "id",
+  createdAt = "createdAt",
+  createdBy = "createdBy",
+  message = "message",
+}
+
+export interface TwitSnapFilter {
+  filterBy: TwitSnapFilterBy;
+  filter: string;
+}

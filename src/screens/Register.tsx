@@ -4,7 +4,7 @@ import closeIcon from "../assets/close_24dp_000000_FILL0_wght400_GRAD0_opsz24.sv
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { SignupCredentials } from "../types";
 import { useNavigate } from "react-router-dom";
-import userService from "../services/userService";
+import userService from "../services/loginService";
 import { FirebaseError } from "firebase/app";
 import { useState } from "react";
 
