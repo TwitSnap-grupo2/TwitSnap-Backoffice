@@ -21,11 +21,13 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import PeopleIcon from "@mui/icons-material/People";
+import Users from "./Users";
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const auth = getAuth();
   const [showTwits, setShowTwits] = useState(false);
+  const [showUsers, setShowUsers] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
 
   // If authStateReady is not checked, the user sets to null as initial value, leading to unwanted behaviour
@@ -47,9 +49,14 @@ const Dashboard: React.FC = () => {
   };
 
   const onSeeTwits = () => {
-    console.log("🚀 ~ onSeeTwits ~ true:", true);
+    setShowUsers(false);
     setShowTwits(true);
   };
+  const onSeeUsers = () => {
+    setShowTwits(false);
+    setShowUsers(true);
+  };
+
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpenDrawer(newOpen);
   };
@@ -95,7 +102,7 @@ const Dashboard: React.FC = () => {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={onSeeUsers}>
                 <ListItemIcon>
                   <PeopleIcon />
                 </ListItemIcon>
@@ -106,6 +113,7 @@ const Dashboard: React.FC = () => {
         </Box>
       </Drawer>
       {showTwits && <TwitSnaps />}
+      {showUsers && <Users />}
     </>
   );
 };
