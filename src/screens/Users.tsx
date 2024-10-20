@@ -98,7 +98,7 @@ const Users = () => {
               label="Filter by"
               name="filterBy"
               sx={{ width: "100%" }}
-              defaultValue={"id"}
+              defaultValue={formik.values.filterBy}
               onChange={formik.handleChange}
               value={formik.values.filterBy}
             >
