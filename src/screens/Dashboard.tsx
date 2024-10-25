@@ -62,8 +62,8 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <>
-      <Box sx={{ bgcolor: "#98b4c7" }}>
+    <Box sx={{ width: "100%", bgcolor: "ffffff" }}>
+      <Box>
         <AppBar position="static">
           <Toolbar>
             <IconButton
@@ -114,7 +114,7 @@ const Dashboard: React.FC = () => {
       </Drawer>
       {showTwits && <TwitSnaps />}
       {showUsers && <Users />}
-    </>
+    </Box>
   );
 };
 

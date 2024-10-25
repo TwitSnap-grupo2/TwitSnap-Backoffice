@@ -1,8 +1,9 @@
 import axios from "axios";
 import config from "../utils/config";
 import { getAuth } from "firebase/auth";
+import { TwitSnap } from "../types";
 
-const getAllTwitSnaps = async () => {
+const getAllTwitSnaps = async (): Promise<Array<TwitSnap>> => {
   const auth = getAuth();
   await auth.authStateReady();
   const user = auth.currentUser;

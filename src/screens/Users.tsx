@@ -40,7 +40,6 @@ const Users = () => {
     values: UserInfoFilter,
     { resetForm }: { resetForm: () => void }
   ) => {
-    console.log("🚀 ~ TwitSnaps ~ values:", values);
     const filter = values.filter;
     const filterBy = values.filterBy;
 

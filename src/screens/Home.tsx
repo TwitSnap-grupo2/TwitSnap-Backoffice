@@ -40,24 +40,22 @@ const Home = () => {
   };
 
   return (
-    <Box className={styles.container}>
-      {/* <div className={styles.imageContainer}> */}
+    <Box className="bg-homeColor grid grid-cols-2 min-h-screen">
       <Box>
         <img src={icon} className={styles.homeImage} />
       </Box>
-      {/* </div> */}
       <Box className={styles.textContainer}>
         <h1 className={styles.text}>Your Gateway to Management.</h1>
-        <Box className="flex mt-5 gap-2">
+        <Box className="flex justify-center w-full mt-5 gap-2">
           <Button
-            sx={{ bgcolor: "#112334", color: "white" }}
+            sx={{ bgcolor: "#112334", color: "white", px: 6, py: 2 }}
             onClick={openRegister}
           >
             Get Started
           </Button>
           <Button
             variant="contained"
-            sx={{ bgcolor: "#112334", color: "white" }}
+            sx={{ bgcolor: "#112334", color: "white", px: 6, py: 2 }}
             onClick={openLogin}
           >
             Login

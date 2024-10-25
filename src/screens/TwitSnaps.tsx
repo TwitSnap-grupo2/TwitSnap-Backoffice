@@ -25,8 +25,12 @@ const TwitSnaps = () => {
     try {
       console.log("fetching...");
       twitsnapsService.getAllTwitSnaps().then((fetchedTwits) => {
-        setTwits(fetchedTwits);
-        setOriginalTwits(fetchedTwits);
+        const twitsWithDates = fetchedTwits.map((twit) => ({
+          ...twit,
+          createdAt: new Date(twit.createdAt), // Convert to Date
+        }));
+        setTwits(twitsWithDates);
+        setOriginalTwits(twitsWithDates);
       });
     } catch (err) {
       if (err instanceof Error) {
