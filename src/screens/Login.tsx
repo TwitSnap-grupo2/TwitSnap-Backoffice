@@ -88,7 +88,7 @@ const Login = (params: LoginParams) => {
               <TextField
                 id="standard-basic"
                 name="password"
-                label="Passowrd"
+                label="Password"
                 variant="standard"
                 type="password"
                 placeholder="Password"
