@@ -22,12 +22,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import PeopleIcon from "@mui/icons-material/People";
 import Users from "./Users";
+import Register from "./Register";
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const auth = getAuth();
   const [showTwits, setShowTwits] = useState(false);
   const [showUsers, setShowUsers] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
 
   // If authStateReady is not checked, the user sets to null as initial value, leading to unwanted behaviour
@@ -51,12 +53,19 @@ const Dashboard: React.FC = () => {
   const onSeeTwits = () => {
     setShowUsers(false);
     setShowTwits(true);
+    setShowRegister(false);
   };
   const onSeeUsers = () => {
     setShowTwits(false);
     setShowUsers(true);
+    setShowRegister(false);
   };
 
+  const onRegisterAdmin = () => {
+    setShowTwits(false);
+    setShowUsers(false);
+    setShowRegister(true);
+  };
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpenDrawer(newOpen);
   };
@@ -109,11 +118,20 @@ const Dashboard: React.FC = () => {
                 <ListItemText primary={"See Users"} />
               </ListItemButton>
             </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton onClick={onRegisterAdmin}>
+                <ListItemIcon>
+                  <PeopleIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Register Admin"} />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Box>
       </Drawer>
       {showTwits && <TwitSnaps />}
       {showUsers && <Users />}
+      {showRegister && <Register setIsRegister={setShowRegister} />}
     </Box>
   );
 };

@@ -3,7 +3,6 @@ import logo from "../assets/logo.png";
 import closeIcon from "../assets/close_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg";
 import { useFormik } from "formik";
 import { SignupCredentials } from "../types";
-import { useNavigate } from "react-router-dom";
 import userService from "../services/loginService";
 import { FirebaseError } from "firebase/app";
 import { useState } from "react";
@@ -14,7 +13,6 @@ interface Params {
 }
 
 const Register = (params: Params) => {
-  const navigate = useNavigate();
   const [registerError, setRegisterError] = useState("");
 
   const validationSchema = Yup.object({
@@ -33,7 +31,7 @@ const Register = (params: Params) => {
     try {
       await userService.signup(values);
       resetForm();
-      navigate("/dashboard");
+      params.setIsRegister(false);
     } catch (err) {
       if (err instanceof FirebaseError) {
         console.error("Firebase error", err.customData);
@@ -107,7 +105,7 @@ const Register = (params: Params) => {
               </div>
             )}
             <Button sx={{ bgcolor: "#112334", color: "white" }} type="submit">
-              Sign Up
+              Register Admin
             </Button>{" "}
           </form>
         </div>
