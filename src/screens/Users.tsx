@@ -16,6 +16,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import User from "./User";
 
 const Users = () => {
   const [users, setUsers] = useState<Array<UserInfo>>([]);
@@ -159,45 +160,12 @@ const Users = () => {
                 id="panel1-header"
                 className="flex gap-3 h-10 mt-10"
               >
-                <Typography className="flex items-center">
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                   {user.user}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>ID: {user.id}</Typography>
-                <Typography>Name: {user.name}</Typography>
-                <Typography>Email: {user.email}</Typography>
-                <Typography>Location: {user.location}</Typography>
-                <Typography>
-                  interests:{" "}
-                  {user.interests.map((interest) => (
-                    <Typography>{interest}</Typography>
-                  ))}
-                </Typography>
-                <Typography>
-                  Goals:{" "}
-                  {user.goals.map((goal) => (
-                    <Typography>{goal}</Typography>
-                  ))}
-                </Typography>
-                <Typography>
-                  Followers:{" "}
-                  {user.followers.map((follower) => (
-                    <Typography>{follower}</Typography>
-                  ))}
-                </Typography>
-                <Typography>
-                  Followeds:{" "}
-                  {user.followeds.map((followed) => (
-                    <Typography>{followed}</Typography>
-                  ))}
-                </Typography>
-                <Typography>
-                  Twitsnaps:{" "}
-                  {user.twitsnaps.map((twitsnap) => (
-                    <Typography>{twitsnap}</Typography>
-                  ))}
-                </Typography>
+                <User user={user}></User>
               </AccordionDetails>
             </Accordion>
           ))}

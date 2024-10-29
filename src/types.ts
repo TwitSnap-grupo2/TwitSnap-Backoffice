@@ -22,13 +22,17 @@ export interface TwitSnap {
   message: string;
   id: string;
   createdAt: Date;
-  createdBy: string;
+  createdBy: UserInfo;
 }
 
 export enum TwitSnapFilterBy {
   id = "id",
   createdAt = "createdAt",
   createdBy = "createdBy",
+  creatorId = "creatorId",
+  creatorUser = "creatorUser",
+  creatorName = "creatorName",
+  creatorEmail = "creatorEmail",
   message = "message",
 }
 
@@ -42,12 +46,12 @@ export interface UserInfo {
   email: string;
   user: string;
   name: string;
-  location: string;
-  interests: Array<string>;
-  goals: Array<string>;
-  followers: Array<string>;
-  followeds: Array<string>;
-  twitsnaps: Array<string>;
+  location?: string;
+  interests?: Array<string>;
+  goals?: Array<string>;
+  followers?: Array<string>;
+  followeds?: Array<string>;
+  twitsnaps?: Array<string>;
 }
 
 export enum UserInfoFilterBy {

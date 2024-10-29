@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TwitSnap, TwitSnapFilter, TwitSnapFilterBy } from "../types";
+import { TwitSnap, TwitSnapFilter, TwitSnapFilterBy, UserInfo } from "../types";
 import twitsnapsService from "../services/twitsnapsService";
 import {
   Accordion,
@@ -16,6 +16,9 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import User from "./User";
+import Item from "./Item";
+import IndentedComponent from "./IndentedComponent";
 
 const TwitSnaps = () => {
   const [twits, setTwits] = useState<Array<TwitSnap>>([]);
@@ -55,6 +58,17 @@ const TwitSnaps = () => {
       let value;
       if (filterBy == "createdAt") {
         value = twit[filterBy].toISOString();
+      } else if (
+        filterBy == "creatorUser" ||
+        filterBy == "creatorId" ||
+        filterBy == "creatorName" ||
+        filterBy == "creatorEmail"
+      ) {
+        const createdByFilter = filterBy
+          .split("creator")[1]
+          .toLowerCase() as keyof UserInfo; // Assert the type to keyof UserInfo
+
+        value = String(twit["createdBy"][createdByFilter]);
       } else {
         value = String(twit[filterBy]);
       }
@@ -62,7 +76,6 @@ const TwitSnaps = () => {
     });
 
     setTwits(filteredTwits);
-
     resetForm();
   };
 
@@ -112,7 +125,11 @@ const TwitSnaps = () => {
             >
               <MenuItem value={"id"}>ID</MenuItem>
               <MenuItem value={"createdAt"}>Created at</MenuItem>
-              <MenuItem value={"createdBy"}>Created by</MenuItem>
+              <MenuItem value={"creatorUser"}>Creator User</MenuItem>
+              <MenuItem value={"creatorName"}>Creator Name</MenuItem>
+              <MenuItem value={"creatorEmail"}>Creator Email</MenuItem>
+              <MenuItem value={"creatorId"}>Creator ID</MenuItem>
+
               <MenuItem value={"message"}>Message</MenuItem>
             </Select>
           </Box>
@@ -162,16 +179,20 @@ const TwitSnaps = () => {
                 id="panel1-header"
                 className="flex gap-3 h-10 mt-10"
               >
-                <Typography className="flex items-center">
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                   {twit.message}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography>Created by: {twit.createdBy}</Typography>
-                <Typography>
-                  Created at: {twit.createdAt.toISOString()}
-                </Typography>
-                <Typography>ID: {twit.id}</Typography>
+                <Typography sx={{ fontWeight: "bold" }}>Created by:</Typography>
+                <IndentedComponent>
+                  <User user={twit.createdBy}></User>
+                </IndentedComponent>
+                <Item
+                  title="Created at"
+                  description={twit.createdAt.toISOString()}
+                />
+                <Item title="ID" description={twit.id} />
               </AccordionDetails>
             </Accordion>
           ))}
