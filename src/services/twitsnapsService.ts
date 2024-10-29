@@ -13,7 +13,10 @@ const getAllTwitSnaps = async (): Promise<Array<TwitSnap>> => {
     headers: { Authorization: `Bearer ${token}` },
   };
 
-  const res = await axios.get(`${config.API_GATEWAY_URL}/twits`, requestConfig);
+  const res = await axios.get(
+    `${config.API_GATEWAY_URL}/twits/populated`,
+    requestConfig
+  );
 
   if (res.status != 200) {
     throw new Error("Error while fetching twitsnaps");

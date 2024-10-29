@@ -5,6 +5,7 @@ import { getAuth } from "firebase/auth";
 // import { TwitSnap } from "../types";
 import TwitSnaps from "./TwitSnaps";
 import {
+  Alert,
   AppBar,
   Box,
   Button,
@@ -15,6 +16,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Snackbar,
+  SnackbarCloseReason,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -31,6 +34,7 @@ const Dashboard: React.FC = () => {
   const [showUsers, setShowUsers] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
 
   // If authStateReady is not checked, the user sets to null as initial value, leading to unwanted behaviour
   useEffect(() => {
@@ -43,6 +47,16 @@ const Dashboard: React.FC = () => {
       }
     });
   });
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSuccess(false);
+  };
 
   const onLogOut = async () => {
     console.log("Logging out...");
@@ -129,9 +143,28 @@ const Dashboard: React.FC = () => {
           </List>
         </Box>
       </Drawer>
+      <Snackbar
+        open={openSuccess}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert
+          onClose={handleClose}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {<p className="text-xl">Admin registered successfully</p>}
+        </Alert>
+      </Snackbar>
       {showTwits && <TwitSnaps />}
       {showUsers && <Users />}
-      {showRegister && <Register setIsRegister={setShowRegister} />}
+      {showRegister && (
+        <Register
+          setIsRegister={setShowRegister}
+          setOpenSuccess={setOpenSuccess}
+        />
+      )}
     </Box>
   );
 };

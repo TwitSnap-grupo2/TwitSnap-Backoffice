@@ -113,29 +113,41 @@ const Users = () => {
               <MenuItem value={"twitsnaps"}>Twitsnaps</MenuItem>
             </Select>
           </Box>
+          <Box
+            sx={{
+              display: "flex",
+              mt: 1.4,
+              ml: 1,
+              gap: 1,
+              width: "30%",
+            }}
+          >
+            <Button
+              type="submit"
+              sx={{
+                mt: 1,
+                width: "100%",
+                bgcolor: "#112334",
+                color: "white",
+                fontWeight: "bold",
+              }}
+            >
+              Filter
+            </Button>
+            <Button
+              onClick={onReset}
+              sx={{
+                mt: 1,
+                width: "100%",
+                bgcolor: "#ff0011",
+                color: "white",
+                fontWeight: "bold",
+              }}
+            >
+              Reset Filter
+            </Button>
+          </Box>
         </Box>
-        <Button
-          type="submit"
-          sx={{
-            mt: 1,
-            width: "100%",
-            bgcolor: "#112334",
-            color: "white",
-          }}
-        >
-          Filter
-        </Button>
-        <Button
-          onClick={onReset}
-          sx={{
-            mt: 1,
-            width: "100%",
-            bgcolor: "#112334",
-            color: "white",
-          }}
-        >
-          Reset Filter
-        </Button>
       </form>
       <Box sx={{ mt: 10 }}>
         {users.length > 0 &&

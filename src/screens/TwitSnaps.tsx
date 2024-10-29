@@ -44,7 +44,6 @@ const TwitSnaps = () => {
     values: TwitSnapFilter,
     { resetForm }: { resetForm: () => void }
   ) => {
-    console.log("🚀 ~ TwitSnaps ~ values:", values);
     const filter = values.filter;
     const filterBy = values.filterBy;
 
@@ -90,7 +89,7 @@ const TwitSnaps = () => {
 
   return (
     <>
-      <form className="px-3 mt-3 " onSubmit={formik.handleSubmit}>
+      <form className="px-3 mt-3" onSubmit={formik.handleSubmit}>
         <Box sx={{ display: "flex", gap: 1 }}>
           <TextField
             sx={{ mt: 2, width: "70%", justifyContent: "end" }}
@@ -117,29 +116,41 @@ const TwitSnaps = () => {
               <MenuItem value={"message"}>Message</MenuItem>
             </Select>
           </Box>
+          <Box
+            sx={{
+              display: "flex",
+              mt: 1.4,
+              ml: 1,
+              gap: 1,
+              width: "30%",
+            }}
+          >
+            <Button
+              type="submit"
+              sx={{
+                mt: 1,
+                width: "100%",
+                bgcolor: "#112334",
+                color: "white",
+                fontWeight: "bold",
+              }}
+            >
+              Filter
+            </Button>
+            <Button
+              onClick={onReset}
+              sx={{
+                mt: 1,
+                width: "100%",
+                bgcolor: "#ff0011",
+                color: "white",
+                fontWeight: "bold",
+              }}
+            >
+              Reset Filter
+            </Button>
+          </Box>
         </Box>
-        <Button
-          type="submit"
-          sx={{
-            mt: 1,
-            width: "100%",
-            bgcolor: "#112334",
-            color: "white",
-          }}
-        >
-          Filter
-        </Button>
-        <Button
-          onClick={onReset}
-          sx={{
-            mt: 1,
-            width: "100%",
-            bgcolor: "#112334",
-            color: "white",
-          }}
-        >
-          Reset Filter
-        </Button>
       </form>
       <Box sx={{ mt: 10 }}>
         {twits.length > 0 &&

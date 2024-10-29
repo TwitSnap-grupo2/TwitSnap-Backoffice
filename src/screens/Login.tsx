@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginService from "../services/loginService";
 import { LoginCredentials } from "../types";
-import { Button, TextField } from "@mui/material";
+import { Alert, Button, SnackbarCloseReason, TextField } from "@mui/material";
 
 interface LoginParams {
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
@@ -37,12 +37,23 @@ const Login = (params: LoginParams) => {
     } catch (err: unknown) {
       console.error("🚀 ~ Login ~ err:", err);
       if (err instanceof Error) {
-        setLoginError(err.message);
+        setLoginError("Invalid credentials");
       } else {
         setLoginError("An unexpected error occurred.");
       }
     }
   };
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setLoginError("");
+  };
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -101,15 +112,20 @@ const Login = (params: LoginParams) => {
                 helperText={formik.touched.password && formik.errors.password}
               />
             </div>
+            {loginError && (
+              <Alert
+                onClose={handleClose}
+                severity="error"
+                variant="filled"
+                sx={{ width: "100%" }}
+              >
+                {<p className="text-lg">{loginError}</p>}
+              </Alert>
+            )}
 
             <Button sx={{ bgcolor: "#112334", color: "white" }} type="submit">
-              Login
+              {formik.isSubmitting ? "Logging In" : "Login"}
             </Button>
-            {loginError && (
-              <div>
-                <p className="text-black">{loginError}</p>
-              </div>
-            )}
           </form>
         </div>
       </div>

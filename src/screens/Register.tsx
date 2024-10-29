@@ -6,14 +6,22 @@ import { SignupCredentials } from "../types";
 import userService from "../services/loginService";
 import { FirebaseError } from "firebase/app";
 import { useState } from "react";
-import { Button, TextField } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Snackbar,
+  SnackbarCloseReason,
+  TextField,
+} from "@mui/material";
 
 interface Params {
   setIsRegister: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Register = (params: Params) => {
   const [registerError, setRegisterError] = useState("");
+  const [openError, setOpenError] = useState(false);
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -32,16 +40,30 @@ const Register = (params: Params) => {
       await userService.signup(values);
       resetForm();
       params.setIsRegister(false);
+      params.setOpenSuccess(true);
     } catch (err) {
       if (err instanceof FirebaseError) {
-        console.error("Firebase error", err.customData);
-        setRegisterError(err.message);
+        if (err.customData._tokenResponse.error.message == "EMAIL_EXISTS")
+          console.error("Firebase error", err.message);
+        setRegisterError("Email already exists");
+        setOpenError(true);
       }
       if (err instanceof Error) {
         console.error("Error: ", err.message);
       }
     }
   };
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenError(false);
+  };
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -100,12 +122,23 @@ const Register = (params: Params) => {
               />
             </div>
             {registerError && (
-              <div>
-                <p>{registerError}</p>
-              </div>
+              <Snackbar
+                open={openError}
+                autoHideDuration={6000}
+                onClose={handleClose}
+              >
+                <Alert
+                  onClose={handleClose}
+                  severity="error"
+                  variant="filled"
+                  sx={{ width: "100%" }}
+                >
+                  {<p className="text-xl">{registerError}</p>}
+                </Alert>
+              </Snackbar>
             )}
             <Button sx={{ bgcolor: "#112334", color: "white" }} type="submit">
-              Register Admin
+              {formik.isSubmitting ? "Submitting..." : "Register Admin"}
             </Button>{" "}
           </form>
         </div>
