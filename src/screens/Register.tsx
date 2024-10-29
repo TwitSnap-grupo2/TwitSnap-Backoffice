@@ -43,19 +43,23 @@ const Register = (params: Params) => {
       params.setOpenSuccess(true);
     } catch (err) {
       if (err instanceof FirebaseError) {
-        if (err.customData._tokenResponse.error.message == "EMAIL_EXISTS")
+        const tokenResponse = err.customData?._tokenResponse as {
+          error: { message: string };
+        };
+        if (tokenResponse?.error.message === "EMAIL_EXISTS") {
           console.error("Firebase error", err.message);
-        setRegisterError("Email already exists");
-        setOpenError(true);
-      }
-      if (err instanceof Error) {
-        console.error("Error: ", err.message);
+          setRegisterError("Email already exists");
+          setOpenError(true);
+        }
+        if (err instanceof Error) {
+          console.error("Error: ", err.message);
+        }
       }
     }
   };
 
   const handleClose = (
-    event?: React.SyntheticEvent | Event,
+    _event?: React.SyntheticEvent | Event,
     reason?: SnackbarCloseReason
   ) => {
     if (reason === "clickaway") {
