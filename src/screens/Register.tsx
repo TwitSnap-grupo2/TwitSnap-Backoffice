@@ -1,6 +1,5 @@
 import * as Yup from "yup";
 import logo from "../assets/logo.png";
-import closeIcon from "../assets/close_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg";
 import { useFormik } from "formik";
 import { SignupCredentials } from "../types";
 import userService from "../services/loginService";
@@ -13,11 +12,6 @@ import {
   SnackbarCloseReason,
   TextField,
 } from "@mui/material";
-
-// interface Params {
-//   setIsRegister: React.Dispatch<React.SetStateAction<boolean>>;
-//   setOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
-// }
 
 const Register = () => {
   const [registerError, setRegisterError] = useState("");
@@ -66,7 +60,7 @@ const Register = () => {
       return;
     }
     setOpenError(false);
-    setOpenSuccess(false);
+    setOpenSuccess(true);
   };
 
   const formik = useFormik({
@@ -79,25 +73,25 @@ const Register = () => {
   });
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+    // <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="flex min-h-screen justify-center">
+      <div className="rounded-xl shadow-xl px-5 w-2/5 pb-10 mt-32 h-fit">
         <div className="flex flex-col gap-5 text-black">
           <div className="flex justify-center relative">
             <img src={logo} className="w-1/4 h-1/4" />
-            <img
-              src={closeIcon}
-              className="absolute top-0 right-0 w-6 h-6 cursor-pointer"
-            />
           </div>
           <div className="flex justify-center text-2xl font-semibold">
             <h2>Register</h2>
           </div>
-          <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
+          <form
+            onSubmit={formik.handleSubmit}
+            className="flex flex-col mt-2 gap-8"
+          >
             <div className="flex flex-col gap-2">
               <TextField
                 id="standard-basic"
                 label="Email"
-                variant="standard"
+                variant="outlined"
                 type="email"
                 name="email"
                 placeholder="Email"
@@ -113,7 +107,7 @@ const Register = () => {
                 id="standard-basic"
                 name="password"
                 label="Password"
-                variant="standard"
+                variant="outlined"
                 type="password"
                 placeholder="Password"
                 value={formik.values.password}
@@ -141,12 +135,18 @@ const Register = () => {
                 </Alert>
               </Snackbar>
             )}
-            <Button sx={{ bgcolor: "#112334", color: "white" }} type="submit">
+            <Button
+              sx={{ bgcolor: "#112334", color: "white", paddingY: "1em" }}
+              type="submit"
+            >
               {formik.isSubmitting ? "Submitting..." : "Register Admin"}
             </Button>{" "}
           </form>
         </div>
       </div>
+      {/* <div className="flex justify-center bg-sky-200  w-1/2 min-h-full">
+        <img src={icon} className={"min-h-scren"} />
+      </div> */}
       <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
         <Alert
           onClose={handleClose}
@@ -158,6 +158,7 @@ const Register = () => {
         </Alert>
       </Snackbar>
     </div>
+    // </div>
   );
 };
 
