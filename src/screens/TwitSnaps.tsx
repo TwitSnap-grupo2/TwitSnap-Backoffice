@@ -21,6 +21,7 @@ import Item from "./Item";
 import IndentedComponent from "./IndentedComponent";
 
 const TwitSnaps = () => {
+  console.log("rendering twitsnaps");
   const [twits, setTwits] = useState<Array<TwitSnap>>([]);
   const [originalTwits, setOriginalTwits] = useState<Array<TwitSnap>>([]);
 

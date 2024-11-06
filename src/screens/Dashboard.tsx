@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 // import twitsnapsService from "../services/twitsnapsService";
 // import { TwitSnap } from "../types";
-import TwitSnaps from "./TwitSnaps";
 import {
-  Alert,
   AppBar,
   Box,
   Button,
@@ -16,25 +14,19 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Snackbar,
-  SnackbarCloseReason,
   Toolbar,
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import PeopleIcon from "@mui/icons-material/People";
-import Users from "./Users";
-import Register from "./Register";
+import { Outlet } from "react-router-dom";
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const auth = getAuth();
-  const [showTwits, setShowTwits] = useState(false);
-  const [showUsers, setShowUsers] = useState(false);
-  const [showRegister, setShowRegister] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [openSuccess, setOpenSuccess] = useState(false);
+  // const [openSuccess, setOpenSuccess] = useState(false);
 
   // If authStateReady is not checked, the user sets to null as initial value, leading to unwanted behaviour
   useEffect(() => {
@@ -48,16 +40,6 @@ const Dashboard: React.FC = () => {
     });
   });
 
-  const handleClose = (
-    _event?: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpenSuccess(false);
-  };
-
   const onLogOut = async () => {
     console.log("Logging out...");
     await auth.signOut();
@@ -65,20 +47,14 @@ const Dashboard: React.FC = () => {
   };
 
   const onSeeTwits = () => {
-    setShowUsers(false);
-    setShowTwits(true);
-    setShowRegister(false);
+    navigate("/dashboard/twits");
   };
   const onSeeUsers = () => {
-    setShowTwits(false);
-    setShowUsers(true);
-    setShowRegister(false);
+    navigate("/dashboard/users");
   };
 
   const onRegisterAdmin = () => {
-    setShowTwits(false);
-    setShowUsers(false);
-    setShowRegister(true);
+    navigate("/dashboard/register");
   };
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpenDrawer(newOpen);
@@ -143,28 +119,7 @@ const Dashboard: React.FC = () => {
           </List>
         </Box>
       </Drawer>
-      <Snackbar
-        open={openSuccess}
-        autoHideDuration={6000}
-        onClose={handleClose}
-      >
-        <Alert
-          onClose={handleClose}
-          severity="success"
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {<p className="text-xl">Admin registered successfully</p>}
-        </Alert>
-      </Snackbar>
-      {showTwits && <TwitSnaps />}
-      {showUsers && <Users />}
-      {showRegister && (
-        <Register
-          setIsRegister={setShowRegister}
-          setOpenSuccess={setOpenSuccess}
-        />
-      )}
+      <Outlet />
     </Box>
   );
 };

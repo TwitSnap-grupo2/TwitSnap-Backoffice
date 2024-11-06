@@ -14,14 +14,15 @@ import {
   TextField,
 } from "@mui/material";
 
-interface Params {
-  setIsRegister: React.Dispatch<React.SetStateAction<boolean>>;
-  setOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
-}
+// interface Params {
+//   setIsRegister: React.Dispatch<React.SetStateAction<boolean>>;
+//   setOpenSuccess: React.Dispatch<React.SetStateAction<boolean>>;
+// }
 
-const Register = (params: Params) => {
+const Register = () => {
   const [registerError, setRegisterError] = useState("");
   const [openError, setOpenError] = useState(false);
+  const [success, setOpenSuccess] = useState(false);
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -39,8 +40,7 @@ const Register = (params: Params) => {
     try {
       await userService.signup(values);
       resetForm();
-      params.setIsRegister(false);
-      params.setOpenSuccess(true);
+      setOpenSuccess(true);
     } catch (err) {
       if (err instanceof FirebaseError) {
         const tokenResponse = err.customData?._tokenResponse as {
@@ -66,6 +66,7 @@ const Register = (params: Params) => {
       return;
     }
     setOpenError(false);
+    setOpenSuccess(false);
   };
 
   const formik = useFormik({
@@ -86,7 +87,6 @@ const Register = (params: Params) => {
             <img
               src={closeIcon}
               className="absolute top-0 right-0 w-6 h-6 cursor-pointer"
-              onClick={() => params.setIsRegister(false)} // Close the modal when clicked
             />
           </div>
           <div className="flex justify-center text-2xl font-semibold">
@@ -147,6 +147,16 @@ const Register = (params: Params) => {
           </form>
         </div>
       </div>
+      <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {<p className="text-xl">Admin registered successfully</p>}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
