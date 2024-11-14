@@ -116,6 +116,18 @@ const Dashboard: React.FC = () => {
                 <ListItemText primary={"Register Admin"} />
               </ListItemButton>
             </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={() => {
+                  navigate("/dashboard/metrics");
+                }}
+              >
+                <ListItemIcon>
+                  <PeopleIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Metrics"} />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Box>
       </Drawer>

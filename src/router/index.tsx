@@ -4,6 +4,7 @@ import Dashboard from "../screens/Dashboard";
 import TwitSnaps from "../screens/TwitSnaps";
 import Users from "../screens/Users";
 import Register from "../screens/Register";
+import Metrics from "../screens/Metrics";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        path: "metrics",
+        element: <Metrics />,
       },
     ],
   },
