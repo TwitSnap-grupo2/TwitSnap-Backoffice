@@ -273,7 +273,7 @@ const Metrics = () => {
             </Box>{" "}
           </div>
           <div className="bg-white flex flex-col p-8 rounded-xl items-center gap-7 flex-1 shadow-xl">
-            <h2 className="text-3xl font-semibold ">Total Success</h2>
+            <h2 className="text-3xl font-semibold ">Requests total</h2>
             <p className="text-2xl font-medium ">
               {passwordRecoveryData.total}
             </p>
