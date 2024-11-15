@@ -3,7 +3,7 @@ export type LocationData = {
   res: number;
 };
 
-type RegistrationData = {
+export type RegistrationData = {
   totalSuccess: number;
   successRate: number;
   averageRegistrationTime: number;
@@ -25,7 +25,7 @@ export const registrationData: RegistrationData = {
   googleCount: 50,
 };
 
-type LoginData = {
+export type LoginData = {
   totalSuccess: number;
   successRate: number;
   averageLoginTime: number;
@@ -47,7 +47,7 @@ export const loginData: LoginData = {
   googleCount: 100,
 };
 
-type PasswordRecoveryData = {
+export type PasswordRecoveryData = {
   totalSuccess: number;
   successRate: number;
   averageRecoverPasswordTime: number;

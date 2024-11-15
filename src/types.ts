@@ -71,3 +71,8 @@ export interface UserInfoFilter {
   filterBy: UserInfoFilterBy;
   filter: string;
 }
+
+export interface MetricsFilter {
+  from: string;
+  to: string;
+}

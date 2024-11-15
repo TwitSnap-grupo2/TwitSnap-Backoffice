@@ -2,11 +2,13 @@
 import { PieChart } from "@mui/x-charts/PieChart";
 import {
   LocationData,
-  loginData,
-  passwordRecoveryData,
-  registrationData,
+  LoginData,
+  PasswordRecoveryData,
+  RegistrationData,
 } from "../utils/data";
 import { Box, CircularProgress, Typography } from "@mui/material";
+import { loginMetrics, passwordRecoveryMetrics, registrationMetrics } from "../services/metricsService";
+import { useEffect, useState } from "react";
 
 // totalSuccess: 150,
 // successRate: 0.85,
@@ -30,6 +32,48 @@ function parseLocationData(locationData: LocationData[]) {
 }
 
 const Metrics = () => {
+  const [registrationData, setRegistrationData] = useState<RegistrationData>({
+    totalSuccess: 0,
+    successRate: 0,
+    averageRegistrationTime: 0,
+    locationCount: [],
+    emailCount: 0,
+    googleCount: 0,
+  });
+  const [loginData, setLoginData] = useState<LoginData>({
+    totalSuccess: 0,
+    successRate: 0,
+    averageLoginTime: 0,
+    locationCount: [],
+    emailCount: 0,
+    googleCount: 0,
+  });
+  const [passwordRecoveryData, setPasswordRecoveryData] = useState<PasswordRecoveryData>({
+    totalSuccess: 0,
+    successRate: 0,
+    averageRecoverPasswordTime: 0,
+  });
+  const oldDate = new Date();
+  oldDate.setDate(oldDate.getDate() - 1000);
+  useEffect(() => {
+    try {
+      console.log("fetching...");
+      registrationMetrics(oldDate, new Date()).then((data) => {
+        setRegistrationData(data);
+      });
+      loginMetrics(oldDate, new Date()).then((data) => {
+        setLoginData(data);
+      });
+      passwordRecoveryMetrics(oldDate, new Date()).then((data) => {
+        setPasswordRecoveryData(data);
+      });
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(err.message);
+        // TODO: Show an error notification
+      }
+    }
+  }, []);
   return (
     <div className="bg-slate-100 min-h-screen py-10 px-5 flex flex-col gap-10">
       <div className="rounded-xl p-10">
