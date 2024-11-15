@@ -59,12 +59,15 @@ const Metrics = () => {
     try {
       console.log("fetching...");
       registrationMetrics(oldDate, new Date()).then((data) => {
+        console.log(data)
         setRegistrationData(data);
       });
       loginMetrics(oldDate, new Date()).then((data) => {
+        console.log(data)
         setLoginData(data);
       });
       passwordRecoveryMetrics(oldDate, new Date()).then((data) => {
+        console.log(data)
         setPasswordRecoveryData(data);
       });
     } catch (err) {
