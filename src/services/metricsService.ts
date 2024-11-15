@@ -15,6 +15,7 @@ const registrationMetrics = async (from:Date , to: Date) => {
     console.log("🚀 ~ registrationMetrics ~ filter");
 
     const res: RegistrationData = await axios.get(`${config.API_GATEWAY_URL}/metrics/register?date_from=${from.toISOString()}&date_to=${to.toISOString()}`, requestConfig);
+    console.log(res)
 
     return res;
 
@@ -32,6 +33,7 @@ const loginMetrics = async (from:Date , to: Date) => {
     console.log("🚀 ~ registrationMetrics ~ filter");
 
     const res: LoginData = await axios.get(`${config.API_GATEWAY_URL}/metrics/login?date_from=${from.toISOString()}&date_to=${to.toISOString()}`, requestConfig);
+    console.log(res)
 
     return res;
 
@@ -49,6 +51,7 @@ const passwordRecoveryMetrics = async (from:Date , to: Date) => {
     console.log("🚀 ~ registrationMetrics ~ filter");
 
     const res: PasswordRecoveryData = await axios.get(`${config.API_GATEWAY_URL}/metrics/recoverPassword?date_from=${from.toISOString()}&date_to=${to.toISOString()}`, requestConfig);
+    console.log(res)
 
     return res;
 
