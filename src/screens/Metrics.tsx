@@ -7,19 +7,12 @@ import {
   RegistrationData,
 } from "../utils/data";
 import { Box, CircularProgress, Typography } from "@mui/material";
-import { loginMetrics, passwordRecoveryMetrics, registrationMetrics } from "../services/metricsService";
+import {
+  loginMetrics,
+  passwordRecoveryMetrics,
+  registrationMetrics,
+} from "../services/metricsService";
 import { useEffect, useState } from "react";
-
-// totalSuccess: 150,
-// successRate: 0.85,
-// averageRegistrationTime: 5.2,
-// locationCount: [
-//   { location: "ARG", res: 25 },
-//   { location: "USA", res: 20 },
-//   { location: "AUS", res: 60 },
-// ],
-// emailCount: 100,
-// googleCount: 50,
 
 function parseLocationData(locationData: LocationData[]) {
   return locationData.map((l, idx) => {
@@ -48,26 +41,27 @@ const Metrics = () => {
     emailCount: 0,
     googleCount: 0,
   });
-  const [passwordRecoveryData, setPasswordRecoveryData] = useState<PasswordRecoveryData>({
-    totalSuccess: 0,
-    successRate: 0,
-    averageRecoverPasswordTime: 0,
-  });
+  const [passwordRecoveryData, setPasswordRecoveryData] =
+    useState<PasswordRecoveryData>({
+      totalSuccess: 0,
+      successRate: 0,
+      averageRecoverPasswordTime: 0,
+    });
   const oldDate = new Date();
   oldDate.setDate(oldDate.getDate() - 1000);
   useEffect(() => {
     try {
       console.log("fetching...");
       registrationMetrics(oldDate, new Date()).then((data) => {
-        console.log(data)
+        console.log("REG", data);
         setRegistrationData(data);
       });
       loginMetrics(oldDate, new Date()).then((data) => {
-        console.log(data)
+        console.log(data);
         setLoginData(data);
       });
       passwordRecoveryMetrics(oldDate, new Date()).then((data) => {
-        console.log(data)
+        console.log(data);
         setPasswordRecoveryData(data);
       });
     } catch (err) {
@@ -76,7 +70,8 @@ const Metrics = () => {
         // TODO: Show an error notification
       }
     }
-  }, []);
+  });
+
   return (
     <div className="bg-slate-100 min-h-screen py-10 px-5 flex flex-col gap-10">
       <div className="rounded-xl p-10">
