@@ -48,13 +48,13 @@ export const loginData: LoginData = {
 };
 
 export type PasswordRecoveryData = {
-  totalSuccess: number;
+  total: number;
   successRate: number;
   averageRecoverPasswordTime: number;
 };
 
 export const passwordRecoveryData: PasswordRecoveryData = {
-  totalSuccess: 53,
+  total: 53,
   successRate: 0.94,
   averageRecoverPasswordTime: 1.3,
 };

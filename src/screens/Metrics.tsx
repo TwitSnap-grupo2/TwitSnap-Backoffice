@@ -43,7 +43,7 @@ const Metrics = () => {
   });
   const [passwordRecoveryData, setPasswordRecoveryData] =
     useState<PasswordRecoveryData>({
-      totalSuccess: 0,
+      total: 0,
       successRate: 0,
       averageRecoverPasswordTime: 0,
     });
@@ -275,7 +275,7 @@ const Metrics = () => {
           <div className="bg-white flex flex-col p-8 rounded-xl items-center gap-7 flex-1 shadow-xl">
             <h2 className="text-3xl font-semibold ">Total Success</h2>
             <p className="text-2xl font-medium ">
-              {passwordRecoveryData.totalSuccess}
+              {passwordRecoveryData.total}
             </p>
           </div>
           <div className="bg-white p-8 flex flex-col items-center gap-7 rounded-xl shadow-xl">
