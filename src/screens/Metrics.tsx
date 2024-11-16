@@ -134,10 +134,10 @@ const Metrics = () => {
             </div>
             <div className="bg-white p-8 flex flex-col items-center gap-7 rounded-xl shadow-xl">
               <h2 className="text-3xl font-semibold text-center">
-                Average Registration Time
+                Average Registration Time 
               </h2>
               <p className="text-2xl font-medium text-center">
-                {registrationData.averageRegistrationTime}
+                {registrationData.averageRegistrationTime} seconds
               </p>
             </div>
           </div>
@@ -213,10 +213,10 @@ const Metrics = () => {
             </div>
             <div className="bg-white p-8 flex flex-col items-center gap-7 rounded-xl shadow-xl">
               <h2 className="text-3xl font-semibold text-center">
-                Average Login Time
+                Average Login Time 
               </h2>
               <p className="text-2xl font-medium text-center">
-                {loginData.averageLoginTime}
+                {loginData.averageLoginTime} seconds
               </p>
             </div>
           </div>
@@ -283,7 +283,7 @@ const Metrics = () => {
               Average Password Recovery Time
             </h2>
             <p className="text-2xl font-medium text-center">
-              {passwordRecoveryData.averageRecoverPasswordTime}
+              {passwordRecoveryData.averageRecoverPasswordTime} seconds
             </p>
           </div>
         </div>
