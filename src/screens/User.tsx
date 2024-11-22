@@ -26,15 +26,16 @@ const User = ({ user, showBlockButton }: UserParams) => {
   const onBlock = async () => {
     try {
       setIsTransitioning(true);
-      await usersService.blockUser(userData.id);
+      if (userData.is_blocked) {
+        await usersService.unBlockUser(userData.id);
+        setSnackbarText(`User ${userData.user} unblocked successfully`);
+      } else {
+        await usersService.blockUser(userData.id);
+        setSnackbarText(`User ${userData.user} blocked successfully`);
+      }
 
       setUserData((prev) => ({ ...prev, is_blocked: !prev.is_blocked }));
       setIsError(false);
-      setSnackbarText(
-        `User ${userData.user} ${
-          userData.is_blocked ? "unblocked" : "blocked"
-        } successfully`
-      );
       setOpenSnackbar(true);
     } catch (err) {
       console.error("Error: ", err);
