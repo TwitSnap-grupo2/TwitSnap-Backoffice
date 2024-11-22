@@ -7,6 +7,7 @@ import {
   AccordionSummary,
   Box,
   Button,
+  CircularProgress,
   InputLabel,
   MenuItem,
   Select,
@@ -21,8 +22,10 @@ import Item from "./Item";
 import IndentedComponent from "./IndentedComponent";
 
 const TwitSnaps = () => {
-  const [twits, setTwits] = useState<Array<TwitSnap>>([]);
-  const [originalTwits, setOriginalTwits] = useState<Array<TwitSnap>>([]);
+  const [twits, setTwits] = useState<Array<TwitSnap> | undefined>(undefined);
+  const [originalTwits, setOriginalTwits] = useState<
+    Array<TwitSnap> | undefined
+  >(undefined);
 
   useEffect(() => {
     try {
@@ -47,6 +50,9 @@ const TwitSnaps = () => {
     values: TwitSnapFilter,
     { resetForm }: { resetForm: () => void }
   ) => {
+    if (!originalTwits) {
+      return;
+    }
     const filter = values.filter;
     const filterBy = values.filterBy;
 
@@ -170,7 +176,13 @@ const TwitSnaps = () => {
         </Box>
       </form>
       <Box sx={{ mt: 10 }}>
-        {twits.length > 0 &&
+        {!twits && (
+          <div className="flex justify-center">
+            <CircularProgress />
+          </div>
+        )}
+        {twits &&
+          twits.length > 0 &&
           twits.map((twit) => (
             <Accordion key={twit.id}>
               <AccordionSummary
@@ -186,7 +198,7 @@ const TwitSnaps = () => {
               <AccordionDetails>
                 <Typography sx={{ fontWeight: "bold" }}>Created by:</Typography>
                 <IndentedComponent>
-                  <User user={twit.createdBy}></User>
+                  <User showBlockButton={false} user={twit.createdBy}></User>
                 </IndentedComponent>
                 <Item
                   title="Created at"

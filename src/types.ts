@@ -52,6 +52,7 @@ export interface UserInfo {
   followers?: Array<string>;
   followeds?: Array<string>;
   twitsnaps?: Array<string>;
+  is_blocked: boolean;
 }
 
 export enum UserInfoFilterBy {

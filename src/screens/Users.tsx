@@ -7,6 +7,7 @@ import {
   AccordionSummary,
   Box,
   Button,
+  CircularProgress,
   InputLabel,
   MenuItem,
   Select,
@@ -19,8 +20,10 @@ import * as Yup from "yup";
 import User from "./User";
 
 const Users = () => {
-  const [users, setUsers] = useState<Array<UserInfo>>([]);
-  const [originalUsers, setOriginalUsers] = useState<Array<UserInfo>>([]);
+  const [users, setUsers] = useState<Array<UserInfo> | undefined>(undefined);
+  const [originalUsers, setOriginalUsers] = useState<
+    Array<UserInfo> | undefined
+  >(undefined);
 
   useEffect(() => {
     try {
@@ -41,6 +44,9 @@ const Users = () => {
     values: UserInfoFilter,
     { resetForm }: { resetForm: () => void }
   ) => {
+    if (!originalUsers) {
+      return;
+    }
     const filter = values.filter;
     const filterBy = values.filterBy;
 
@@ -151,7 +157,13 @@ const Users = () => {
         </Box>
       </form>
       <Box sx={{ mt: 10 }}>
-        {users.length > 0 &&
+        {!users && (
+          <div className="flex justify-center">
+            <CircularProgress />
+          </div>
+        )}
+        {users &&
+          users.length > 0 &&
           users.map((user) => (
             <Accordion key={user.id}>
               <AccordionSummary
@@ -165,7 +177,7 @@ const Users = () => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <User user={user}></User>
+                <User showBlockButton={true} user={user}></User>
               </AccordionDetails>
             </Accordion>
           ))}
