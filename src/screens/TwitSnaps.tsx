@@ -17,9 +17,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import User from "./User";
-import Item from "./Item";
-import IndentedComponent from "./IndentedComponent";
+import Twit from "./Twit";
 
 const TwitSnaps = () => {
   const [twits, setTwits] = useState<Array<TwitSnap> | undefined>(undefined);
@@ -35,6 +33,10 @@ const TwitSnaps = () => {
           ...twit,
           createdAt: new Date(twit.createdAt), // Convert to Date
         }));
+        console.log(
+          "🚀 ~ twitsnapsService.getAllTwitSnaps ~ twitsWithDates:",
+          twitsWithDates
+        );
         setTwits(twitsWithDates);
         setOriginalTwits(twitsWithDates);
       });
@@ -196,7 +198,8 @@ const TwitSnaps = () => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography sx={{ fontWeight: "bold" }}>Created by:</Typography>
+                <Twit twit={twit}></Twit>
+                {/* <Typography sx={{ fontWeight: "bold" }}>Created by:</Typography>
                 <IndentedComponent>
                   <User showBlockButton={false} user={twit.createdBy}></User>
                 </IndentedComponent>
@@ -205,6 +208,32 @@ const TwitSnaps = () => {
                   description={twit.createdAt.toISOString()}
                 />
                 <Item title="ID" description={twit.id} />
+
+                <Button
+                  sx={{
+                    mt: 1,
+                    bgcolor: twit.isBlocked ? "#00ff37" : "#ff0011",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                  onClick={() => onBlock()}
+                >
+                  {buttonText(twit.isBlocked, isTransitioning)}
+                </Button>
+                <Snackbar
+                  open={openSnackbar}
+                  autoHideDuration={3000}
+                  onClose={handleClose}
+                >
+                  <Alert
+                    onClose={handleClose}
+                    severity={isError ? "error" : "success"}
+                    variant="filled"
+                    sx={{ width: "100%" }}
+                  >
+                    <p className="text-xl">{snackbarText}</p>
+                  </Alert>
+                </Snackbar> */}
               </AccordionDetails>
             </Accordion>
           ))}

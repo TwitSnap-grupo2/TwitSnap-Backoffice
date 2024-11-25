@@ -23,6 +23,7 @@ export interface TwitSnap {
   id: string;
   createdAt: Date;
   createdBy: UserInfo;
+  isBlocked: boolean;
 }
 
 export enum TwitSnapFilterBy {

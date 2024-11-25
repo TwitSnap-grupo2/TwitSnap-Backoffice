@@ -18,10 +18,51 @@ const getAllTwitSnaps = async (): Promise<Array<TwitSnap>> => {
     requestConfig
   );
 
+  return res.data;
+};
+
+const blockTwit = async (twitId: string) => {
+  const auth = getAuth();
+  await auth.authStateReady();
+  const user = auth.currentUser;
+  const token = await user?.getIdToken();
+
+  const requestConfig = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
+  const res = await axios.patch(
+    `${config.API_GATEWAY_URL}/twits/${twitId}/block`,
+    undefined,
+    requestConfig
+  );
+
   if (res.status != 200) {
-    throw new Error("Error while fetching twitsnaps");
+    throw new Error("Error while blocking twitsnap");
   }
   return res.data;
 };
 
-export default { getAllTwitSnaps };
+const unblockTwit = async (twitId: string) => {
+  const auth = getAuth();
+  await auth.authStateReady();
+  const user = auth.currentUser;
+  const token = await user?.getIdToken();
+
+  const requestConfig = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
+  const res = await axios.patch(
+    `${config.API_GATEWAY_URL}/twits/${twitId}/unblock`,
+    undefined,
+    requestConfig
+  );
+
+  if (res.status != 200) {
+    throw new Error("Error while blocking twitsnap");
+  }
+  return res.data;
+};
+
+export default { getAllTwitSnaps, blockTwit, unblockTwit };
