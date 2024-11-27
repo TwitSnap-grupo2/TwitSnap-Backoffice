@@ -78,3 +78,13 @@ export interface MetricsFilter {
   from: string;
   to: string;
 }
+
+export interface Service {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: Date;
+  apiKey: string;
+}
+
+export type NewService = Omit<Service, "id" | "createdAt" | "apiKey">;

@@ -5,6 +5,9 @@ import TwitSnaps from "../screens/TwitSnaps";
 import Users from "../screens/Users";
 import Register from "../screens/Register";
 import Metrics from "../screens/Metrics";
+// import Services from "../screens/Services";
+import AddService from "../screens/AddService";
+import Services from "../screens/Services";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +33,14 @@ const router = createBrowserRouter([
       {
         path: "metrics",
         element: <Metrics />,
+      },
+
+      {
+        path: "services",
+        children: [
+          { path: "add", element: <AddService /> },
+          { path: "info", element: <Services /> },
+        ],
       },
     ],
   },

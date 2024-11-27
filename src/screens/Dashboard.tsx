@@ -7,6 +7,7 @@ import {
   AppBar,
   Box,
   Button,
+  Collapse,
   Drawer,
   IconButton,
   List,
@@ -14,18 +15,25 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  ListSubheader,
   Toolbar,
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import PeopleIcon from "@mui/icons-material/People";
+import MiscellaneousServicesIcon from "@mui/icons-material/MiscellaneousServices";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import { Outlet } from "react-router-dom";
-
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import PostAddIcon from "@mui/icons-material/PostAdd";
+import FindInPageIcon from "@mui/icons-material/FindInPage";
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const auth = getAuth();
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [openServices, setOpenServices] = useState(false);
   // const [openSuccess, setOpenSuccess] = useState(false);
 
   // If authStateReady is not checked, the user sets to null as initial value, leading to unwanted behaviour
@@ -89,11 +97,22 @@ const Dashboard: React.FC = () => {
         <Box
           sx={{ width: 250 }}
           role="presentation"
-          onClick={toggleDrawer(false)}
+          // onClick={toggleDrawer(false)}
         >
-          <List>
+          <List
+            subheader={
+              <ListSubheader component="div" id="nested-list-subheader">
+                Nested List Items
+              </ListSubheader>
+            }
+          >
             <ListItem disablePadding>
-              <ListItemButton onClick={onSeeTwits}>
+              <ListItemButton
+                onClick={() => {
+                  onSeeTwits();
+                  setOpenDrawer(false);
+                }}
+              >
                 <ListItemIcon>
                   <TwitterIcon />
                 </ListItemIcon>
@@ -101,7 +120,12 @@ const Dashboard: React.FC = () => {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton onClick={onSeeUsers}>
+              <ListItemButton
+                onClick={() => {
+                  onSeeUsers();
+                  setOpenDrawer(false);
+                }}
+              >
                 <ListItemIcon>
                   <PeopleIcon />
                 </ListItemIcon>
@@ -109,9 +133,14 @@ const Dashboard: React.FC = () => {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton onClick={onRegisterAdmin}>
+              <ListItemButton
+                onClick={() => {
+                  onRegisterAdmin();
+                  setOpenDrawer(false);
+                }}
+              >
                 <ListItemIcon>
-                  <PeopleIcon />
+                  <PersonAddAlt1Icon />
                 </ListItemIcon>
                 <ListItemText primary={"Register Admin"} />
               </ListItemButton>
@@ -120,14 +149,58 @@ const Dashboard: React.FC = () => {
               <ListItemButton
                 onClick={() => {
                   navigate("/dashboard/metrics");
+                  setOpenDrawer(false);
                 }}
               >
                 <ListItemIcon>
-                  <PeopleIcon />
+                  <EqualizerIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Metrics"} />
               </ListItemButton>
             </ListItem>
+            {/* <ListItem disablePadding> */}
+            <ListItemButton
+              onClick={() => {
+                setOpenServices(!openServices);
+              }}
+            >
+              <ListItemIcon>
+                <MiscellaneousServicesIcon />
+              </ListItemIcon>
+              <ListItemText primary={"Services"} />
+              {openServices ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse in={openServices} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => {
+                    setOpenServices(!openServices);
+                    setOpenDrawer(false);
+                    navigate("/dashboard/services/add");
+                  }}
+                >
+                  <ListItemIcon>
+                    <PostAddIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Add Service" />
+                </ListItemButton>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => {
+                    setOpenServices(!openServices);
+                    setOpenDrawer(false);
+                    navigate("/dashboard/services/info");
+                  }}
+                >
+                  <ListItemIcon>
+                    <FindInPageIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="See Services" />
+                </ListItemButton>
+              </List>
+            </Collapse>
+            {/* </ListItem> */}
           </List>
         </Box>
       </Drawer>
