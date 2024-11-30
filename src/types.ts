@@ -85,6 +85,10 @@ export interface Service {
   description: string;
   createdAt: Date;
   apiKey: string;
+  validUntil: string;
 }
 
-export type NewService = Omit<Service, "id" | "createdAt" | "apiKey">;
+export type NewService = Omit<
+  Service,
+  "id" | "createdAt" | "apiKey" | "validUntil"
+>;

@@ -1,31 +1,28 @@
 import { useState, useEffect } from "react";
 import servicesService from "../services/servicesService";
-import { Service } from "../types";
+import { Service as ServiceType } from "../types";
+import Service from "./Service";
 
 const Services = () => {
-  const [services, setServices] = useState<Array<Service> | undefined>(
+  const [services, setServices] = useState<Array<ServiceType> | undefined>(
     undefined
   );
   useEffect(() => {
     servicesService.getAllServices().then((res) => setServices(res));
   }, []);
   return (
-    <>
+    <div className="py-6 px-8">
       {services && services.length == 0 && (
         <p>There are no services registered</p>
       )}
-      {services &&
-        services.length > 0 &&
-        services.map((service) => (
-          <div key={service.id}>
-            <p>id: {service.id}</p>
-            <p>name: {service.name}</p>
-            <p>description: {service.description}</p>
-            {/* <p>createdAt: {service.createdAt}</p> */}
-            <p>apiKey: {service.apiKey}</p>
-          </div>
-        ))}
-    </>
+      {services && services.length > 0 && (
+        <div className="flex flex-wrap flex-1 gap-8">
+          {services.map((service) => (
+            <Service service={service}></Service>
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
 

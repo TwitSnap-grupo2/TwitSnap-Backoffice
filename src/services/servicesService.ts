@@ -40,4 +40,47 @@ const createNewService = async (newService: NewService): Promise<Service> => {
   return res.data;
 };
 
-export default { getAllServices, createNewService };
+const blockService = async (serviceId: string): Promise<Service> => {
+  const auth = getAuth();
+  await auth.authStateReady();
+  const user = auth.currentUser;
+  const token = await user?.getIdToken();
+
+  const requestConfig = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
+  const res = await axios.patch(
+    `${config.API_GATEWAY_URL}/services/${serviceId}/block`,
+    undefined,
+    requestConfig
+  );
+
+  return res.data;
+};
+
+const unblockService = async (serviceId: string): Promise<Service> => {
+  const auth = getAuth();
+  await auth.authStateReady();
+  const user = auth.currentUser;
+  const token = await user?.getIdToken();
+
+  const requestConfig = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
+  const res = await axios.patch(
+    `${config.API_GATEWAY_URL}/services/${serviceId}`,
+    undefined,
+    requestConfig
+  );
+
+  return res.data;
+};
+
+export default {
+  getAllServices,
+  createNewService,
+  blockService,
+  unblockService,
+};
