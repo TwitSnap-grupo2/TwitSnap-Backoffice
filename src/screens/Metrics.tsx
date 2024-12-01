@@ -1,13 +1,14 @@
 // import { LineChart } from "@mui/x-charts/LineChart";
 import { PieChart } from "@mui/x-charts/PieChart";
 import {
+  HashtagMetrics,
   LocationData,
   LoginData,
   PasswordRecoveryData,
   RegistrationData,
   TwitsnapMetrics,
 } from "../utils/data";
-import { Box, CircularProgress, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, CircularProgress, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import {
   loginMetrics,
   passwordRecoveryMetrics,
@@ -17,6 +18,8 @@ import {
 import twitsnapsService from "../services/twitsnapsService";
 import { useEffect, useState } from "react";
 import { BarChart } from '@mui/x-charts/BarChart';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
 
 
 
@@ -57,46 +60,26 @@ const Metrics = () => {
   const [range, setRange] = useState<string>("year");
   const oldDate = new Date();
   oldDate.setDate(oldDate.getDate() - 1000);
-  //   useEffect(() => {
-  //     try {
-  //       console.log("fetching...");
-  //       registrationMetrics(oldDate, new Date()).then((data) => {
-  //         console.log("REG", data);
-  //         setRegistrationData(data);
-  //       });
-  //       loginMetrics(oldDate, new Date()).then((data) => {
-  //         console.log(data);
-  //         setLoginData(data);
-  //       });
-  //       passwordRecoveryMetrics(oldDate, new Date()).then((data) => {
-  //         console.log(data);
-  //         setPasswordRecoveryData(data);
-  //       });
-  //     } catch (err) {
-  //       if (err instanceof Error) {
-  //         console.error(err.message);
-  //         // TODO: Show an error notification
-  //       }
-  //     }
-  //   }
-  // );
+    useEffect(() => {
+      try {
+        registrationMetrics(oldDate, new Date()).then((data) => {
+          setRegistrationData(data);
+        });
+        loginMetrics(oldDate, new Date()).then((data) => {
+          setLoginData(data);
+        });
+        passwordRecoveryMetrics(oldDate, new Date()).then((data) => {
+          setPasswordRecoveryData(data);
+        });
+      } catch (err) {
+        if (err instanceof Error) {
+          console.error(err.message);
+          // TODO: Show an error notification
+        }
+      }
+    }
+  );
 
-  const generateWeeksDataset = () => {
-    const weeks = ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'];
-    return weeks.map((week) => ({ week, count: 0 }));
-  };
-
-  const groupDataByWeeks = (data: Array<{ date: string; count: number }>) => {
-    const dataset = generateWeeksDataset();
-  
-    data.forEach(({ date, count }) => {
-      const parsedDate = new Date(date);
-      const weekNumber = Math.ceil(parsedDate.getDate() / 7) - 1;
-      dataset[weekNumber].count += count; 
-    });
-  
-    return dataset;
-  };
 
   const [twitsnapMetrics, setTwitsnapMetrics] = useState<TwitsnapMetrics>({
     total: 0,
@@ -111,7 +94,7 @@ const Metrics = () => {
   useEffect(() => {
     try {
       console.log("fetching...");
-      twitsnapsService.getTwitSnapsMetrics("year").then((data) => {
+      twitsnapsService.getTwitSnapsMetrics(range).then((data) => {
         console.log(data);
         setTwitsnapMetrics(data);
       });
@@ -120,7 +103,32 @@ const Metrics = () => {
         console.error(err.message);
       }
     }
-  })
+  });
+
+  const [hashtag, setHashtag] = useState<string>("");
+
+  const [hashtagMetrics, setHashtagMetrics] = useState<HashtagMetrics>({
+    total: 0,
+    frequency: [],
+    topHashtags: [],
+  });
+  
+  useEffect(() => {
+
+    try {
+      console.log("fetching...");
+      twitsnapsService.getHashtagMetrics(range, hashtag).then((data) => {
+        console.log(data);
+        setHashtagMetrics(data);
+      });
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(err.message);
+      }
+    }
+  });
+
+  
 
 
 
@@ -356,10 +364,18 @@ const Metrics = () => {
             sx={{ width: "100%" }}
             onChange={(e) => {
               setRange(e.target.value as string);
-              twitsnapsService.getTwitSnapsMetrics(e.target.value as string).then((data) => {
-                console.log(data);
-                setTwitsnapMetrics(data);
-              });
+              try {
+                console.log("fetching...");
+                twitsnapsService.getTwitSnapsMetrics(e.target.value as string).then((data) => {
+                  console.log(data);
+                  setTwitsnapMetrics(data);
+                });
+              } catch (err) {
+                if (err instanceof Error) {
+                  console.error(err.message);
+                }
+              }
+             
             }
             }
 
@@ -373,33 +389,113 @@ const Metrics = () => {
         <h3 className="text-2xl font-medium "> Twitsnaps</h3>
 
         <div className="flex gap-12 p-6">
-
+          <div className="grid grid-flow-col grid-rows-2 gap-6">
           <div className=" bg-white p-20 flex flex-col items-center gap-5 rounded-xl shadow-xl">
             <h2 className="text-3xl font-semibold">Total</h2>
             <p className="text-2xl font-medium ">{twitsnapMetrics.total}</p>
           </div>
+          <div className="bg-white flex flex-col p-8 rounded-xl items-center gap-7 shadow-xl">
+            <h2 className="text-3xl font-semibold ">Average Twits Per User</h2>
+            <p className="text-2xl font-medium ">
+              {twitsnapMetrics.averageTwitsPerUser}
+            </p>
+            </div>
+          </div>
           <div className="bg-white flex flex-col p-8 rounded-xl items-center gap-7 flex-1 shadow-xl">
             <h2 className="text-3xl font-semibold ">Twitsnaps frequency</h2>
             <BarChart
-              dataset={get}
-              xAxis={[{ scaleType: 'band', dataKey: 'week', label: 'Semanas' }]}
-              series={[
-                {
-                  dataKey: 'count',
-                  label: 'Conteo semanal',
-                  valueFormatter: (value) => `${value} unidades`,
-                },
-              ]}
+              xAxis={[{ scaleType: 'band', data: ['January', 'February', 'March', 'April', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] }]}
+              series={[{ data: [4, 3, 5] }, { data: [1, 6, 3] }, { data: [2, 5, 6] }]}
               width={500}
               height={300}
             />
           </div>
+          
+
+        </div>
+
+        <div className="grid grid-flow-col grid-cols-2 gap-6">
+          <div className="bg-white flex flex-col p-8 rounded-xl items-center gap-7 shadow-xl">
+            <h2 className="text-3xl font-semibold ">Top Liked Twits</h2>
+            <ul>
+              {twitsnapMetrics.topLikedTwits.map((twit) => (
+                <Accordion key={twit.id}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1-content"
+                  id="panel1-header"
+                  className="flex gap-3 h-10 mt-10"
+                >
+                  <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                    {twit.message}
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    <p>Twit ID: {twit.id}</p>
+                    <p>Likes: {twit.count}</p>
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+              ))}
+            </ul>
+          </div>
+          <div className="bg-white flex flex-col p-8 rounded-xl items-center gap-7 shadow-xl">
+            <h2 className="text-3xl font-semibold ">Top Shared Twits</h2>
+            <ul>
+              {twitsnapMetrics.topSharedTwits.map((twit) => (
+                <Accordion key={twit.id}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1-content"
+                  id="panel1-header"
+                  className="flex gap-3 h-10 mt-10"
+                >
+                  <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                    {twit.message}
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    <p>Twit ID: {twit.id}</p>
+                    <p>Shares: {twit.count}</p>
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+              ))}
+            </ul>
+          </div>
         </div>
         <h3 className="text-2xl font-medium "> Hashtags</h3>
+        <div className="">
+        <TextField
+            sx={{ mt: 2, width: "30%", justifyContent: "end" }}
+            name="filter"
+            label="Enter a hashtag"
+            value={hashtag}
+            onChange={(e) => 
+              {setHashtag(e.target.value)
+              try {
+                console.log("fetching...");
+                twitsnapsService.getHashtagMetrics(range, e.target.value).then((data) => {
+                  console.log(data);
+                  setHashtagMetrics(data);
+                });
+              } catch (err) {
+                if (err instanceof Error) {
+                  console.error(err.message);
+                }
+              }
+              }}
+
+          ></TextField>
+
+        </div>
         <div className="flex gap-12 p-6">
 
           <div className=" bg-white p-20 flex flex-col items-center gap-5 rounded-xl shadow-xl">
             <h2 className="text-3xl font-semibold">Total</h2>
+            <p className="text-2xl font-medium ">{hashtagMetrics.total}</p>
 
           </div>
           <div className="bg-white flex flex-col p-8 rounded-xl items-center gap-7 flex-1 shadow-xl">
@@ -411,6 +507,31 @@ const Metrics = () => {
               height={300}
             />
           </div>
+        </div>
+        <div className="bg-white flex flex-col p-8 rounded-xl items-center gap-7 flex-1 shadow-xl">
+          <h2 className="text-3xl font-semibold ">Top Hashtags</h2>
+          {hashtagMetrics.topHashtags.map((hashtag) => (
+            <Accordion key={hashtag.name}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1-content"
+                id="panel1-header"
+                className="flex gap-3 h-10 mt-10"
+              >
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                  {hashtag.name}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  <p>Hashtag: {hashtag.name}</p>
+                  <p>Count: {hashtag.count}</p>
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+
+          
         </div>
       </div>
 

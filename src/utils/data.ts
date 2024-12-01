@@ -41,10 +41,28 @@ export type TwitsnapMetrics = {
     count: number;
     id: string;
     message: string | null;
+    isBlocked: boolean;
+    createdBy: string;
+    createdAt: string;
   }>;
   topSharedTwits: Array<{
     count: number;
     id: string;
     message: string | null;
+    isBlocked: boolean;
+    createdBy: string;
+    createdAt: string;
+  }>;
+}
+
+export type HashtagMetrics = {
+  total: number;
+  frequency: Array<{
+    date: string;
+    count: number;
+  }>;
+  topHashtags: Array<{
+    count: number;
+    name: string;
   }>;
 }

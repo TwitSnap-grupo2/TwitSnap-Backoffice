@@ -2,7 +2,7 @@ import axios from "axios";
 import config from "../utils/config";
 import { getAuth } from "firebase/auth";
 import { TwitSnap } from "../types";
-import { TwitsnapMetrics } from "../utils/data";
+import { HashtagMetrics, TwitsnapMetrics } from "../utils/data";
 
 const getAllTwitSnaps = async (): Promise<Array<TwitSnap>> => {
   const auth = getAuth();
@@ -84,5 +84,34 @@ const getTwitSnapsMetrics = async (range: string): Promise<TwitsnapMetrics> => {
   return res.data;
 }
 
+const getHashtagMetrics = async (range: string, name: string): Promise<HashtagMetrics> => {
+  const auth = getAuth();
+  await auth.authStateReady();
+  const user = auth.currentUser;
+  const token = await user?.getIdToken();
 
-export default { getAllTwitSnaps, blockTwit, unblockTwit, getTwitSnapsMetrics };
+  const requestConfig = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
+  if(name === ""){
+    
+  const res = await axios.get<HashtagMetrics>(
+    `${config.API_GATEWAY_URL}/twits/metrics/hashtag?range=${range}`,
+    requestConfig
+  );
+  return res.data
+} else {
+  const res = await axios.get<HashtagMetrics>(
+    `${config.API_GATEWAY_URL}/twits/metrics/hashtag?range=${range}&name=${name}`,
+    requestConfig
+  );
+  return res.data
+}
+
+}
+
+
+
+
+export default { getAllTwitSnaps, blockTwit, unblockTwit, getTwitSnapsMetrics, getHashtagMetrics };
