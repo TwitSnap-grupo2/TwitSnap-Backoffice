@@ -4,7 +4,7 @@ export type LocationData = {
 };
 
 export type RegistrationData = {
-  totalSuccess: number;
+  totalSuccess: number | null;
   successRate: number;
   averageRegistrationTime: number;
   locationCount: LocationData[];
@@ -14,7 +14,7 @@ export type RegistrationData = {
 
 
 export type LoginData = {
-  totalSuccess: number;
+  totalSuccess: number | null;
   successRate: number;
   averageLoginTime: number;
   locationCount: LocationData[];
@@ -25,13 +25,13 @@ export type LoginData = {
 
 
 export type PasswordRecoveryData = {
-  total: number;
+  total: number | null;
   successRate: number;
   averageRecoverPasswordTime: number;
 };
 
 export type TwitsnapMetrics = {
-  total: number;
+  total: number | null;
   frequency: Array<{
     date: string;
     count: number;
@@ -56,7 +56,7 @@ export type TwitsnapMetrics = {
 }
 
 export type HashtagMetrics = {
-  total: number;
+  total: number | null;
   frequency: Array<{
     date: string;
     count: number;

@@ -199,41 +199,7 @@ const TwitSnaps = () => {
               </AccordionSummary>
               <AccordionDetails>
                 <Twit twit={twit}></Twit>
-                {/* <Typography sx={{ fontWeight: "bold" }}>Created by:</Typography>
-                <IndentedComponent>
-                  <User showBlockButton={false} user={twit.createdBy}></User>
-                </IndentedComponent>
-                <Item
-                  title="Created at"
-                  description={twit.createdAt.toISOString()}
-                />
-                <Item title="ID" description={twit.id} />
-
-                <Button
-                  sx={{
-                    mt: 1,
-                    bgcolor: twit.isBlocked ? "#00ff37" : "#ff0011",
-                    color: "white",
-                    fontWeight: "bold",
-                  }}
-                  onClick={() => onBlock()}
-                >
-                  {buttonText(twit.isBlocked, isTransitioning)}
-                </Button>
-                <Snackbar
-                  open={openSnackbar}
-                  autoHideDuration={3000}
-                  onClose={handleClose}
-                >
-                  <Alert
-                    onClose={handleClose}
-                    severity={isError ? "error" : "success"}
-                    variant="filled"
-                    sx={{ width: "100%" }}
-                  >
-                    <p className="text-xl">{snackbarText}</p>
-                  </Alert>
-                </Snackbar> */}
+                
               </AccordionDetails>
             </Accordion>
           ))}

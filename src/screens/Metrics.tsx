@@ -1,4 +1,4 @@
-// import { LineChart } from "@mui/x-charts/LineChart";
+import { eachWeekOfInterval, format } from 'date-fns';
 import { PieChart } from "@mui/x-charts/PieChart";
 import {
   HashtagMetrics,
@@ -8,7 +8,7 @@ import {
   RegistrationData,
   TwitsnapMetrics,
 } from "../utils/data";
-import { Accordion, AccordionDetails, AccordionSummary, Box, CircularProgress, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, CircularProgress, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import {
   loginMetrics,
   passwordRecoveryMetrics,
@@ -35,7 +35,7 @@ function parseLocationData(locationData: LocationData[]) {
 
 const Metrics = () => {
   const [registrationData, setRegistrationData] = useState<RegistrationData>({
-    totalSuccess: 0,
+    totalSuccess: null,
     successRate: 0,
     averageRegistrationTime: 0,
     locationCount: [],
@@ -43,7 +43,7 @@ const Metrics = () => {
     googleCount: 0,
   });
   const [loginData, setLoginData] = useState<LoginData>({
-    totalSuccess: 0,
+    totalSuccess: null,
     successRate: 0,
     averageLoginTime: 0,
     locationCount: [],
@@ -52,10 +52,12 @@ const Metrics = () => {
   });
   const [passwordRecoveryData, setPasswordRecoveryData] =
     useState<PasswordRecoveryData>({
-      total: 0,
+      total: null,
       successRate: 0,
       averageRecoverPasswordTime: 0,
     });
+  const [parsedData, setParsedData] = useState<{ week: string; count: number }[]>([]);
+
 
   const [range, setRange] = useState<string>("year");
   const oldDate = new Date();
@@ -82,7 +84,7 @@ const Metrics = () => {
 
 
   const [twitsnapMetrics, setTwitsnapMetrics] = useState<TwitsnapMetrics>({
-    total: 0,
+    total: null,
     frequency: [],
     averageTwitsPerUser: 0,
     topLikedTwits: [],
@@ -97,6 +99,7 @@ const Metrics = () => {
       twitsnapsService.getTwitSnapsMetrics(range).then((data) => {
         console.log(data);
         setTwitsnapMetrics(data);
+        setParsedData(parseWeeklyData(data.frequency, new Date().getFullYear()));
       });
     } catch (err) {
       if (err instanceof Error) {
@@ -105,10 +108,9 @@ const Metrics = () => {
     }
   });
 
-  const [hashtag, setHashtag] = useState<string>("");
 
   const [hashtagMetrics, setHashtagMetrics] = useState<HashtagMetrics>({
-    total: 0,
+    total: null,
     frequency: [],
     topHashtags: [],
   });
@@ -117,7 +119,7 @@ const Metrics = () => {
 
     try {
       console.log("fetching...");
-      twitsnapsService.getHashtagMetrics(range, hashtag).then((data) => {
+      twitsnapsService.getHashtagMetrics(range).then((data) => {
         console.log(data);
         setHashtagMetrics(data);
       });
@@ -128,16 +130,51 @@ const Metrics = () => {
     }
   });
 
+
+  const generateWeeksOfYear = (year: number): string[] => {
+    return eachWeekOfInterval({
+      start: new Date(year, 0, 1), 
+      end: new Date(year, 11, 31),
+    }, { weekStartsOn: 1 }).map((date) => format(date, 'yyyy-MM-dd'));
+  };
   
+  const parseWeeklyData = (data: Array<{ count: number; date: string }>, year: number) => {
+    const weeks = generateWeeksOfYear(year);
+  
+    const weeklyMap = new Map<string, number>(
+      weeks.map((week) => [week, 0])
+    );
+  
+    data.forEach(({ count, date }) => {
+      const weekKey = format(new Date(date), 'yyyy-MM-dd');
+      if (weeklyMap.has(weekKey)) {
+        weeklyMap.set(weekKey, count);
+      }
+    });
+  
+    return Array.from(weeklyMap.entries()).map(([week, count]) => ({
+      week,
+      count,
+    }));
+  };
+
+
 
 
 
   return (
+  
     <div className="bg-slate-100 min-h-screen py-10 px-5 flex flex-col gap-10">
       <div className="rounded-xl p-10">
         <h1 className="font-semibold text-5xl text-center mb-10">
           Registration Metrics
         </h1>
+        {registrationData.totalSuccess === null && (
+            <div className="flex justify-center">
+              <CircularProgress />
+            </div>
+          )}
+        {registrationData.totalSuccess !== null && (
         <div className="flex gap-12 p-6">
           <div className="grid grid-flow-col grid-rows-2 gap-6">
             <div className="flex gap-5 flex-1">
@@ -216,11 +253,18 @@ const Metrics = () => {
             />{" "}
           </div>
         </div>
+          )}  
       </div>
       <div className="rounded-xl p-10">
         <h1 className="font-semibold text-5xl text-center mb-10">
           Login Metrics
         </h1>
+        {loginData.totalSuccess === null && (
+            <div className="flex justify-center">
+              <CircularProgress />
+              </div>
+              )}
+        {loginData.totalSuccess !== null && (
         <div className="flex gap-12 p-6">
           <div className="grid grid-flow-col grid-rows-2 gap-6">
             <div className="flex gap-5 flex-1">
@@ -293,16 +337,20 @@ const Metrics = () => {
             />{" "}
           </div>
         </div>
+
+          )}
       </div>
       <div className="rounded-xl p-10">
         <h1 className="font-semibold text-5xl text-center mb-10">
           Password Recovery Metrics
         </h1>
-
+        {passwordRecoveryData.total === null && (
+            <div className="flex justify-center">
+              <CircularProgress />
+              </div>
+              )}
+              {passwordRecoveryData.total !== null && (
         <div className="flex gap-12 p-6">
-          {/* <div className="grid grid-flow-col grid-rows-2 gap-6"> */}
-          {/* <div className=""> */}
-          {/* <div className="flex gap-5 flex-1"> */}
           <div className=" bg-white p-8 flex flex-col items-center gap-5 rounded-xl shadow-xl">
             <h2 className="text-3xl font-semibold">Success Rate</h2>
             <Box sx={{ position: "relative", display: "inline-flex" }}>
@@ -348,6 +396,9 @@ const Metrics = () => {
             </p>
           </div>
         </div>
+
+                )}
+
       </div>
       <div className="rounded-xl p-10">
         <h1 className="font-semibold text-5xl text-center mb-10">
@@ -364,6 +415,18 @@ const Metrics = () => {
             sx={{ width: "100%" }}
             onChange={(e) => {
               setRange(e.target.value as string);
+              setTwitsnapMetrics({
+                total: null,
+                frequency: [],
+                averageTwitsPerUser: 0,
+                topLikedTwits: [],
+                topSharedTwits: [],
+              });
+              setHashtagMetrics({
+                total: null,
+                frequency: [],
+                topHashtags: [],
+              });
               try {
                 console.log("fetching...");
                 twitsnapsService.getTwitSnapsMetrics(e.target.value as string).then((data) => {
@@ -380,13 +443,21 @@ const Metrics = () => {
             }
 
           >
-            <MenuItem value={"day"}>Último día</MenuItem>
-            <MenuItem value={"week"}>Última semana</MenuItem>
-            <MenuItem value={"month"}>Último mes</MenuItem>
-            <MenuItem value={"year"}>Último año</MenuItem>
+            <MenuItem value={"day"}>Today</MenuItem>
+            <MenuItem value={"week"}>This Week</MenuItem>
+            <MenuItem value={"month"}>This Month</MenuItem>
+            <MenuItem value={"year"}>This Year</MenuItem>
           </Select>
         </Box>
+
         <h3 className="text-2xl font-medium "> Twitsnaps</h3>
+        {twitsnapMetrics.total === null && (
+            <div className="flex justify-center">
+              <CircularProgress />
+            </div>
+          )}
+
+        {twitsnapMetrics.total !== null && (
 
         <div className="flex gap-12 p-6">
           <div className="grid grid-flow-col grid-rows-2 gap-6">
@@ -404,8 +475,8 @@ const Metrics = () => {
           <div className="bg-white flex flex-col p-8 rounded-xl items-center gap-7 flex-1 shadow-xl">
             <h2 className="text-3xl font-semibold ">Twitsnaps frequency</h2>
             <BarChart
-              xAxis={[{ scaleType: 'band', data: ['January', 'February', 'March', 'April', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] }]}
-              series={[{ data: [4, 3, 5] }, { data: [1, 6, 3] }, { data: [2, 5, 6] }]}
+              xAxis={[{ scaleType: 'band', data: parsedData.map((d) => d.week) }]}
+              series={[{ data: parsedData.map((d) => d.count) }]}
               width={500}
               height={300}
             />
@@ -413,7 +484,9 @@ const Metrics = () => {
           
 
         </div>
+        )}
 
+        {twitsnapMetrics.total !== null && (
         <div className="grid grid-flow-col grid-cols-2 gap-6">
           <div className="bg-white flex flex-col p-8 rounded-xl items-center gap-7 shadow-xl">
             <h2 className="text-3xl font-semibold ">Top Liked Twits</h2>
@@ -466,31 +539,18 @@ const Metrics = () => {
             </ul>
           </div>
         </div>
+        )}
         <h3 className="text-2xl font-medium "> Hashtags</h3>
-        <div className="">
-        <TextField
-            sx={{ mt: 2, width: "30%", justifyContent: "end" }}
-            name="filter"
-            label="Enter a hashtag"
-            value={hashtag}
-            onChange={(e) => 
-              {setHashtag(e.target.value)
-              try {
-                console.log("fetching...");
-                twitsnapsService.getHashtagMetrics(range, e.target.value).then((data) => {
-                  console.log(data);
-                  setHashtagMetrics(data);
-                });
-              } catch (err) {
-                if (err instanceof Error) {
-                  console.error(err.message);
-                }
-              }
-              }}
+        {hashtagMetrics.total === null && (
+            
+            <div className="flex justify-center">
+              <CircularProgress />
+              </div>
+              )}
 
-          ></TextField>
 
-        </div>
+          {hashtagMetrics.total && (
+            
         <div className="flex gap-12 p-6">
 
           <div className=" bg-white p-20 flex flex-col items-center gap-5 rounded-xl shadow-xl">
@@ -498,16 +558,6 @@ const Metrics = () => {
             <p className="text-2xl font-medium ">{hashtagMetrics.total}</p>
 
           </div>
-          <div className="bg-white flex flex-col p-8 rounded-xl items-center gap-7 flex-1 shadow-xl">
-            <h2 className="text-3xl font-semibold ">Hashtag frequency</h2>
-            <BarChart
-              xAxis={[{ scaleType: 'band', data: ['January', 'February', 'March', 'April', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] }]}
-              series={[{ data: [4, 3, 5] }, { data: [1, 6, 3] }, { data: [2, 5, 6] }]}
-              width={500}
-              height={300}
-            />
-          </div>
-        </div>
         <div className="bg-white flex flex-col p-8 rounded-xl items-center gap-7 flex-1 shadow-xl">
           <h2 className="text-3xl font-semibold ">Top Hashtags</h2>
           {hashtagMetrics.topHashtags.map((hashtag) => (
@@ -525,7 +575,7 @@ const Metrics = () => {
               <AccordionDetails>
                 <Typography>
                   <p>Hashtag: {hashtag.name}</p>
-                  <p>Count: {hashtag.count}</p>
+                  <p>Times used: {hashtag.count}</p>
                 </Typography>
               </AccordionDetails>
             </Accordion>
@@ -533,10 +583,15 @@ const Metrics = () => {
 
           
         </div>
+         
+        </div>
+        )}
       </div>
 
     </div>
   );
 };
+
+
 
 export default Metrics;
