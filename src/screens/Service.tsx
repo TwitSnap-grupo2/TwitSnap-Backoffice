@@ -15,7 +15,7 @@ interface ServiceProps {
 }
 
 const Service = ({ service }: ServiceProps) => {
-  const [serviceData, setServieData] = useState(service);
+  const [serviceData, setServiceData] = useState(service);
   const [isValid, setIsValid] = useState(
     new Date(serviceData.validUntil) > new Date()
   );
@@ -27,17 +27,18 @@ const Service = ({ service }: ServiceProps) => {
   const onBlock = async () => {
     try {
       setIsTransitioning(true);
+      let newServiceData;
       if (!isValid) {
-        const a = await servicesService.unblockService(serviceData.id);
-        console.log("🚀 ~ onBlock ~ a:", a);
-        setSnackbarText(`Service ${serviceData.name} unblocked successfully`);
+        newServiceData = await servicesService.createNewApiKey(serviceData.id);
+        setSnackbarText(
+          `Created new API Key for Service ${serviceData.name} successfully`
+        );
       } else {
-        const a = await servicesService.blockService(serviceData.id);
-        console.log("🚀 ~ onBlock ~ a:", a);
+        newServiceData = await servicesService.blockService(serviceData.id);
         setSnackbarText(`Service ${serviceData.name} blocked successfully`);
       }
-
-      //   setServieData((prev) => ({ ...prev, is_blocked: !prev.is_blocked }));
+      console.log("🚀 ~ onBlock ~ newServiceData:", newServiceData);
+      setServiceData(newServiceData);
       setIsValid(!isValid);
       setIsError(false);
       setOpenSnackbar(true);
@@ -68,13 +69,13 @@ const Service = ({ service }: ServiceProps) => {
   return (
     <>
       <Card sx={{ minWidth: 380, maxWidth: 385 }}>
-        <CardContent key={service.id}>
-          <h2 className="font-semibold">{service.name}</h2>
-          <p>id: {service.id}</p>
-          <p>description: {service.description}</p>
-          <p>createdAt: {new Date(service.createdAt).toISOString()}</p>
-          <p>apiKey: {service.apiKey}</p>
-          <p>validUntil: {new Date(service.validUntil).toISOString()}</p>
+        <CardContent key={serviceData.id}>
+          <h2 className="font-semibold">{serviceData.name}</h2>
+          <p>id: {serviceData.id}</p>
+          <p>description: {serviceData.description}</p>
+          <p>createdAt: {new Date(serviceData.createdAt).toISOString()}</p>
+          <p>apiKey: {serviceData.apiKey}</p>
+          <p>validUntil: {new Date(serviceData.validUntil).toISOString()}</p>
           <Button
             sx={{
               mt: 1,
@@ -109,9 +110,9 @@ const Service = ({ service }: ServiceProps) => {
 const buttonText = (isValid: boolean, isTransitioning: boolean) => {
   if (!isValid) {
     if (isTransitioning) {
-      return "Unblocking...";
+      return "Creating...";
     }
-    return "Unblock";
+    return "Create new API Key";
   }
   if (isTransitioning) {
     return "Blocking...";

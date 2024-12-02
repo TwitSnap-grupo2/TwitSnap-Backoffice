@@ -59,7 +59,7 @@ const blockService = async (serviceId: string): Promise<Service> => {
   return res.data;
 };
 
-const unblockService = async (serviceId: string): Promise<Service> => {
+const createNewApiKey = async (serviceId: string): Promise<Service> => {
   const auth = getAuth();
   await auth.authStateReady();
   const user = auth.currentUser;
@@ -82,5 +82,5 @@ export default {
   getAllServices,
   createNewService,
   blockService,
-  unblockService,
+  createNewApiKey,
 };
