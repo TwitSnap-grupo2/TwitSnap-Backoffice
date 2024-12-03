@@ -205,7 +205,14 @@ const Dashboard: React.FC = () => {
         </Box>
       </Drawer>
       <Outlet />
+      <div className="flex py-10 justify-center">
+      <h2 className="text-gray-900 text-4xl font-extrabold md:text-5xl lg:text-6xl">
+    Welcome <span className="text-cyan-950">Back!</span>
+  </h2>
+  </div>
     </Box>
+
+    
   );
 };
 
