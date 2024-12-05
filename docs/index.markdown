@@ -1,97 +1,128 @@
 ---
 layout: default
-title: TwitSnap Mobile App
-description: "Guía de usuario de la aplicación mobile TwitSnap."
+title: TwitSnap BackOffice
+description: "Guía de usuario del backoffice de TwitSnap."
 ---
 
 
-- [¿Qué es TwitSnap?](#qué-es-twitsnap)
-- [Descarga Twitsnap](#descarga-twitsnap)
-- [Crea una cuenta en TwitSnap](#crea-una-cuenta-en-twitsnap)
-- [Crea tu primer twit](#crea-tu-primer-twit)
-- [Tu perfil](#tu-perfil)
-- [Visualiza tus twits favoritos](#visualiza-tus-twits-favoritos)
-- [Realizá búsquedas](#realizá-búsquedas)
-- [Revisa tus notificaciones](#revisa-tus-notificaciones)
-- [Visualiza tus mensajes directos](#visualiza-tus-mensajes-directos)
+- [¿Qué es TwitSnap BackOffice?](#qué-es-twitsnap-backoffice)
+- [Iniciar sesión en el BackOffice](#iniciar-sesión-en-el-backoffice)
+- [Ver twits](#ver-twits)
+- [Ver usuarios](#ver-usuarios)
+- [Registrar nuevo administrador](#registrar-nuevo-administrador)
+- [Ver métricas](#ver-métricas)
+- [Agregar Servicio](#agregar-servicio)
+- [Ver servicios y bloquearlos](#ver-servicios-y-bloquearlos)
 - [Disfruta de TwitSnap y comparte tus ideas con el mundo.](#disfruta-de-twitsnap-y-comparte-tus-ideas-con-el-mundo)
 - [Equipo de desarrollo](#equipo-de-desarrollo)
 
-## ¿Qué es TwitSnap?
+## ¿Qué es TwitSnap Backoffice?
 
-TwitSnap es una red social que permite a los usuarios compartir ideas, noticias y pensamientos en mensajes cortos, establecer conexiones con otros usuarios y seguir su progreso a lo largo del tiempo. El objetivo principal de TwitSnap es brindar una comunidad interactiva en la cual los usuarios puedan conectarse entre sí, compartir contenido relevante y lograr sus objetivos individuales en un entorno social enriquecedor.
-
-## Descarga Twitsnap
-
-* [Descarga la aplicación TwitSnap aquí](https://expo.dev/accounts/lghosn/projects/TwitSnap/builds/a9f00c49-4968-420f-8873-077deb9b8e15).
+TwitSnap BackOffice es una página web diseñada para gestionar y supervisar las operaciones administrativas de la plataforma TwitSnap. Este backoffice permite a los administradores realizar tareas como moderación de contenido, gestión de usuarios, revisión de estadísticas y análisis del uso de la plataforma.
 
 
-## Crea una cuenta en TwitSnap
+## Iniciar sesión en el BackOffice
 
-Para crear una cuenta en TwitSnap, sigue los siguientes pasos:
-1. Abre la aplicación TwitSnap y da click sobre el botón "Registrarse" o inicia con Google.
-   ![inicio](img/01-inicio.jpg){:height="30%" width="30%"}
+Para iniciar sesión, sigue los siguientes pasos:
+1. Ingresa a "https://twitsnap-backoffice-1.onrender.com/" .
+   ![inicio](img/backoffice-1.png){:height="30%" width="30%"}
 
-2. Completa el formulario con tu email, constraseña, nombre, nombre de usuario y país. 
-   ![registro](img/02-registrar.jpg){:height="30%" width="30%"}
+2. Completa tus datos de administrador. Es necesario que otro administrador te haya registrado antes. 
+   ![registro](img/backoffice-2.png){:height="30%" width="30%"}
 
-3. ¡Listo! Ya puedes comenzar a disfrutar de TwitSnap.
+3. ¡Listo! Ya puedes comenzar a utilizar el backoffice.
 
-   ![registro](img/03-feed.jpg){:height="30%" width="30%"}
+## Ver twits
 
-## Crea tu primer twit
+Para buscar twits, sigue los siguientes pasos:
+1. Elige la "See twits" en la barra de opciones.
 
-Para crear tu primer twit, sigue los siguientes pasos:
-1. Da click sobre el botón "+" en la parte inferior derecha de la pantalla.
-2. Escribe tu twit en el campo de texto y luego "Publicar".
+![see twits](img/backoffice-3.png){:height="30%" width="30%"}
+
+2. Busca tu twit por el filtro que quieras.
    
-   ![crear twit](img/04-crear_twit.jpg){:height="30%" width="30%"}
+   ![buscar](img/backoffice-4.png){:height="30%" width="30%"}
 
-3. ¡Listo! Ya has creado tu primer twit.
+3. Podrás ver los twits con sus respectivos datos, y bloquear twits que desees.
 
-   ![twit creado](img/05-primer_twit.jpg){:height="30%" width="30%"}
+   ![ver twit](img/backoffice-5.png){:height="30%" width="30%"}
 
-## Tu perfil
-En tu perfil podrás ver tus datos personales, tus twits y tus seguidores. Para ir, de click sobre tu foto de perfil en la parte superior izquierda de la pantalla.
 
-   ![perfil](img/11-perfil.jpg){:height="30%" width="30%"}
+## Ver usuarios
 
-Además también podrá ver sus estadísticas de twits y editar sus intereses, nombre de usuario y nacionalidad.
+Para buscar usuarios, sigue los siguientes pasos:
+1. Elige la "See users" en la barra de opciones.
+
+![see users](img/backoffice-6.png){:height="30%" width="30%"}
+
+2. Busca usuarios por el filtro que quieras.
    
-   ![perfil](img/12-stats.jpg){:height="30%" width="30%"}
-   ![perfil](img/13-edit.jpg){:height="30%" width="30%"}
+   ![buscar usuario](img/backoffice-7.png){:height="30%" width="30%"}
 
-## Visualiza tus twits favoritos
+3. Podrás ver sus respectivos datos y podrás bloquear y desbloquear los usuarios que desees.
 
-Para visualizar tus twits favoritos, sigue los siguientes pasos:
-1. Da click sobre la rueda de configuración en la parte superior derecha de la pantalla.
-2. Selecciona "Twits Favoritos" en el menú desplegable.
+   ![bloquear usuario](img/backoffice-8.png){:height="30%" width="30%"}
+
+
+## Registrar nuevo administrador
+
+Para registrar a un nuevo administrador, sigue los siguientes pasos:
+1. Elige la opción "Register Admin".
+
+   ![favoritos](img/backoffice-9.png){:height="30%" width="30%"}
+
+
+2. Añade su email y su contraseña.
    
-   ![favoritos](img/07-configuracion.jpg){:height="30%" width="30%"}
-   ![favoritos](img/06-vista_favoritos.jpg){:height="30%" width="30%"}
+   ![favoritos](img/backoffice-19.png){:height="30%" width="30%"}
 
-## Realizá búsquedas
+3. A partir de ahora, el nuevo admin podrá iniciar sesión
 
-En la sección de búsqueda podrás buscar twits por palabras clave, usuarios y hashtags. Además en esta pestaña podrás ver usuarios sugeridos para seguir.
+## Ver métricas
 
-   ![buscar](img/08-busqueda.jpg){:height="30%" width="30%"}
+Para ver las métricas relevantes de twitsnap, sigue los siguientes pasos:
+1. Elige la opción "Metrics".
 
-## Revisa tus notificaciones
+   ![favoritos](img/backoffice-11.png){:height="30%" width="30%"}
 
-En la sección de notificaciones podrás ver los nuevos mensajes que no hayas leído.
 
-   ![notificaciones](img/09-notificaciones.jpg){:height="30%" width="30%"}
+2. Podrás ver métricas de registros, inicios de sesión, pérdida de contraseña, y twits.
+   
+   ![favoritos](img/backoffice-12.png){:height="30%" width="30%"}
 
-## Visualiza tus mensajes directos
 
-En la sección de mensajes directos podrás ver los mensajes que te han enviado otros usuarios.
+## Agregar Servicio
 
-   ![mensajes](img/10-mensajes.jpg){:height="30%" width="30%"}
+Desde el BackOffice, podrás agregar servicios al sistema.
+
+1. Elige la opción "Add Service".
+
+   ![favoritos](img/backoffice-13.png){:height="30%" width="30%"}
+
+
+2. Agrega su nombre y descripción.
+   
+   ![favoritos](img/backoffice-14.png){:height="30%" width="30%"}
+
+
+## Ver servicios y bloquearlos
+
+Como administrador podrás ver todos los servicios del sistema
+
+1. Elige la opción "See Service".
+
+   ![favoritos](img/backoffice-15.png){:height="30%" width="30%"}
+
+
+2. De esta forma podrás ver los servicios del sistema, y podrás optar por bloquear alguno.
+   
+   ![favoritos](img/backoffice-16.png){:height="30%" width="30%"}
+
 
 
 ## Disfruta de TwitSnap y comparte tus ideas con el mundo.
 
-Ya estás listo para disfrutar de TwitSnap. ¡Diviértete compartiendo tus ideas con el mundo!
+Ya estás listo para disfrutar administrar TwitSnap. ¡Diviértete compartiendo tus ideas con el mundo!
 
 ## Equipo de desarrollo
 
