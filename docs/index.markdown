@@ -124,7 +124,7 @@ Como administrador podrás ver todos los servicios del sistema
 
 ## Disfruta de TwitSnap y comparte tus ideas con el mundo.
 
-Ya estás listo para disfrutar administrar TwitSnap. ¡Diviértete compartiendo tus ideas con el mundo!
+Ya estás listo para administrar TwitSnap. ¡Diviértete compartiendo tus ideas con el mundo!
 
 ## Equipo de desarrollo
 
