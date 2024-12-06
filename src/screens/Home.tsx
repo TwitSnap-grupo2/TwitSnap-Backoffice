@@ -13,13 +13,21 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    userService.getLoggedUser().then((user) => {
-      if (user) {
-        navigate("/dashboard");
-      } else {
-        setIsLoading(false);
+    const getLoggedUser = async () => {
+      try {
+        const user = await userService.getLoggedUser();
+        if (user) {
+          navigate("/dashboard");
+        } else {
+          setIsLoading(false);
+        }
+      } catch (err) {
+        if (err instanceof Error) {
+          console.error("Error: ", err.message);
+        }
       }
-    });
+    };
+    getLoggedUser();
   });
 
   if (isLoading) {

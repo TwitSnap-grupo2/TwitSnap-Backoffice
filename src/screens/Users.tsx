@@ -26,18 +26,21 @@ const Users = () => {
   >(undefined);
 
   useEffect(() => {
-    try {
-      console.log("fetching...");
-      usersService.getAllUsers().then((fetchedUsers) => {
+    const fetchUsers = async () => {
+      try {
+        console.log("fetching...");
+        const fetchedUsers = await usersService.getAllUsers();
         setUsers(fetchedUsers);
         setOriginalUsers(fetchedUsers);
-      });
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error(err.message);
-        // TODO: Show an error notification
+      } catch (err) {
+        if (err instanceof Error) {
+          console.error("Error fetching users:", err.message);
+          // TODO: Show an error notification
+        }
       }
-    }
+    };
+
+    fetchUsers();
   }, []);
 
   const onSubmit = async (

@@ -102,7 +102,7 @@ const Dashboard: React.FC = () => {
           <List
             subheader={
               <ListSubheader component="div" id="nested-list-subheader">
-                Nested List Items
+                <p className="mt-4 mb-2 font-bold text-xl text-center">Menu</p>
               </ListSubheader>
             }
           >
@@ -205,10 +205,7 @@ const Dashboard: React.FC = () => {
         </Box>
       </Drawer>
       <Outlet />
-    
     </Box>
-
-    
   );
 };
 

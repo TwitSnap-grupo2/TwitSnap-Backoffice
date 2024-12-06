@@ -26,26 +26,24 @@ const TwitSnaps = () => {
   >(undefined);
 
   useEffect(() => {
-    try {
-      console.log("fetching...");
-      twitsnapsService.getAllTwitSnaps().then((fetchedTwits) => {
+    const getAllTwits = async () => {
+      try {
+        console.log("fetching...");
+        const fetchedTwits = await twitsnapsService.getAllTwitSnaps();
         const twitsWithDates = fetchedTwits.map((twit) => ({
           ...twit,
           createdAt: new Date(twit.createdAt), // Convert to Date
         }));
-        console.log(
-          "🚀 ~ twitsnapsService.getAllTwitSnaps ~ twitsWithDates:",
-          twitsWithDates
-        );
         setTwits(twitsWithDates);
         setOriginalTwits(twitsWithDates);
-      });
-    } catch (err) {
-      if (err instanceof Error) {
-        console.error(err.message);
-        // TODO: Show an error notification
+      } catch (err) {
+        if (err instanceof Error) {
+          console.error(err.message);
+          // TODO: Show an error notification
+        }
       }
-    }
+    };
+    getAllTwits();
   }, []);
 
   const onSubmit = async (
@@ -199,7 +197,6 @@ const TwitSnaps = () => {
               </AccordionSummary>
               <AccordionDetails>
                 <Twit twit={twit}></Twit>
-                
               </AccordionDetails>
             </Accordion>
           ))}
