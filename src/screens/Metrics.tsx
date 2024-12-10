@@ -556,7 +556,7 @@ const Metrics = () => {
           </div>
         )}
 
-        {hashtagMetrics.total && (
+        {hashtagMetrics.total !== null && (
           <div className="flex gap-12 p-6">
             <div className=" bg-white p-20 flex flex-col items-center gap-5 rounded-xl shadow-xl">
               <h2 className="text-3xl font-semibold">Total</h2>
